@@ -1,0 +1,97 @@
+import 'package:eazy_shop/Home_screen/main_screen.dart';
+import 'package:eazy_shop/user_data/otp_verify.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+class UserMobileVerify extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+                margin: const EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
+                  borderRadius: new BorderRadius.circular(30.0),
+
+                ),
+                child: Image.asset(
+                  "assets/mobile.png"
+                ),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height*0.03,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width*0.8,
+              padding: const EdgeInsets.all(20.0),
+              decoration: new BoxDecoration(
+                color: Colors.grey.shade200,
+                borderRadius: new BorderRadius.circular(20.0),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Text(
+                      "Mobile Number Verification",
+                      style: GoogleFonts.montserrat(fontSize: 18.0,fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "Keep your data secure using two step mobile number verification",
+                      style: GoogleFonts.montserrat(fontSize: 14.0),),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                      ],
+                      decoration: InputDecoration(
+                          labelText: "Your Phone number with +91",
+                          icon: Icon(Icons.phone_iphone)),
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: RaisedButton(onPressed: (){
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (ctx) => OTPVerification()));
+                    },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(10.0),
+
+                      ),
+                      padding: const EdgeInsets.all(10.0),
+                      child: Center(
+                        child: new Text(
+                          'Send OTP',
+                          style: new TextStyle(fontSize: 18.0, color: Colors.white,fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      color: Colors.blueAccent,),
+                  ),
+                ],
+              ),
+            ),
+
+
+          ],
+              ),
+            ),
+
+    );
+  }
+}
