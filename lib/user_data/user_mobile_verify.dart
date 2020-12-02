@@ -1,4 +1,6 @@
 import 'package:eazy_shop/Home_screen/main_screen.dart';
+import 'package:eazy_shop/models/login/send_otp.dart';
+import 'package:eazy_shop/network/client_functions.dart';
 import 'package:eazy_shop/user_data/otp_verify.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,20 +17,17 @@ class UserMobileVerify extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-                margin: const EdgeInsets.all(10.0),
-                decoration: BoxDecoration(
-                  borderRadius: new BorderRadius.circular(30.0),
-
-                ),
-                child: Image.asset(
-                  "assets/mobile.png"
-                ),
+              margin: const EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                borderRadius: new BorderRadius.circular(30.0),
+              ),
+              child: Image.asset("assets/mobile.png"),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height*0.03,
+              height: MediaQuery.of(context).size.height * 0.03,
             ),
             Container(
-              width: MediaQuery.of(context).size.width*0.8,
+              width: MediaQuery.of(context).size.width * 0.8,
               padding: const EdgeInsets.all(20.0),
               decoration: new BoxDecoration(
                 color: Colors.grey.shade200,
@@ -41,14 +40,16 @@ class UserMobileVerify extends StatelessWidget {
                     padding: const EdgeInsets.all(5.0),
                     child: Text(
                       "Mobile Number Verification",
-                      style: GoogleFonts.montserrat(fontSize: 18.0,fontWeight: FontWeight.bold),
+                      style: GoogleFonts.montserrat(
+                          fontSize: 18.0, fontWeight: FontWeight.bold),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       "Keep your data secure using two step mobile number verification",
-                      style: GoogleFonts.montserrat(fontSize: 14.0),),
+                      style: GoogleFonts.montserrat(fontSize: 14.0),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -63,35 +64,57 @@ class UserMobileVerify extends StatelessWidget {
                           icon: Icon(Icons.phone_iphone)),
                     ),
                   ),
-
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: RaisedButton(onPressed: (){
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (ctx) => OTPVerification()));
-                    },
-                      shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(10.0),
-
-                      ),
-                      padding: const EdgeInsets.all(10.0),
-                      child: Center(
-                        child: new Text(
-                          'Send OTP',
-                          style: new TextStyle(fontSize: 18.0, color: Colors.white,fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      color: Colors.blueAccent,),
-                  ),
+                  SendOtpBoxContainer()
                 ],
               ),
             ),
-
-
           ],
-              ),
-            ),
+        ),
+      ),
+    );
+  }
+}
 
+class SendOtpBoxContainer extends StatefulWidget {
+  SendOtpBoxContainerState createState() => SendOtpBoxContainerState();
+}
+
+class SendOtpBoxContainerState extends State<SendOtpBoxContainer> {
+  String buttonText = "Send OTP";
+  bool enabled = true;
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: RaisedButton(
+        onPressed: enabled
+            ? () async {
+                setState(() {
+                  buttonText = "Loading..";
+                  enabled = false;
+                });
+                getOtp("9821976291").then((value) {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (ctx) => OTPVerification()));
+                }).catchError((error) {
+                  print("error: " + error.toString());
+                });
+              }
+            : null,
+        shape: RoundedRectangleBorder(
+          borderRadius: new BorderRadius.circular(10.0),
+        ),
+        padding: const EdgeInsets.all(10.0),
+        child: Center(
+          child: new Text(
+            buttonText,
+            style: new TextStyle(
+                fontSize: 18.0,
+                color: Colors.white,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+        color: Colors.blueAccent,
+      ),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:eazy_shop/Home_screen/main_screen.dart';
+import 'package:eazy_shop/network/client_functions.dart';
 import 'package:eazy_shop/user_data/otp_verify.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,20 +18,19 @@ class OTPVerification extends StatelessWidget {
             Container(
               margin: const EdgeInsets.all(10.0),
               decoration: BoxDecoration(
-                  borderRadius: new BorderRadius.circular(30.0),
-
-                  
-
+                borderRadius: new BorderRadius.circular(30.0),
               ),
               child: Image.asset(
-"assets/otp_verifing.jpg",width: MediaQuery.of(context).size.width*0.6,height: MediaQuery.of(context).size.height*0.3,
+                "assets/otp_verifing.jpg",
+                width: MediaQuery.of(context).size.width * 0.6,
+                height: MediaQuery.of(context).size.height * 0.3,
               ),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height*0.03,
+              height: MediaQuery.of(context).size.height * 0.03,
             ),
             Container(
-              width: MediaQuery.of(context).size.width*0.8,
+              width: MediaQuery.of(context).size.width * 0.8,
               padding: const EdgeInsets.all(10.0),
               decoration: new BoxDecoration(
                 color: Colors.grey.shade200,
@@ -43,19 +43,24 @@ class OTPVerification extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 8.0, bottom: 10),
                     child: Text(
                       "OTP Verifing",
-                      style: GoogleFonts.montserrat(fontSize: 18.0,fontWeight: FontWeight.bold),
+                      style: GoogleFonts.montserrat(
+                          fontSize: 18.0, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  RichText(text: TextSpan(
-                    text: "Enter the OTP sent to ",
-                      style: GoogleFonts.montserrat(fontSize: 14.0,color: Colors.grey),
-                    children: [
-                      TextSpan(
-                        text:"+91 - 9123456789 ",
-                        style: TextStyle(color: Colors.black,fontSize: 14.0, fontWeight: FontWeight.bold)
-                      )
-                    ]
-                  ),),
+                  RichText(
+                    text: TextSpan(
+                        text: "Enter the OTP sent to ",
+                        style: GoogleFonts.montserrat(
+                            fontSize: 14.0, color: Colors.grey),
+                        children: [
+                          TextSpan(
+                              text: "+91 - 9123456789 ",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.bold))
+                        ]),
+                  ),
                   TextFormField(
                     style: TextStyle(fontWeight: FontWeight.bold),
                     keyboardType: TextInputType.number,
@@ -69,29 +74,52 @@ class OTPVerification extends StatelessWidget {
                   SizedBox(
                     height: 15,
                   ),
-                  RaisedButton(onPressed: (){
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (ctx) => MainScreen()));
-                  },
-                    shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(10.0),
-
-                    ),
-                    padding: const EdgeInsets.all(10.0),
-                    child: Center(
-                      child: new Text(
-                        'Continue',
-                        style: new TextStyle(fontSize: 20.0, color: Colors.white),
-                      ),
-                    ),
-                    color: Colors.blueAccent,),
-
+                  VerifyButton()
                 ],
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class VerifyButton extends StatefulWidget {
+  VerifyButtonState createState() => VerifyButtonState();
+}
+
+class VerifyButtonState extends State<VerifyButton> {
+  String buttonText = "Continue";
+  bool enabled = true;
+  @override
+  Widget build(BuildContext context) {
+    return RaisedButton(
+      onPressed: enabled
+          ? () {
+              setState(() {
+                buttonText = "Loading..";
+                enabled = false;
+                verifyOtp("1111", "9821976291").then((value) {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (ctx) => MainScreen()));
+                }).catchError((error) {
+                  print("error: " + error.toString());
+                });
+              });
+            }
+          : null,
+      shape: RoundedRectangleBorder(
+        borderRadius: new BorderRadius.circular(10.0),
+      ),
+      padding: const EdgeInsets.all(10.0),
+      child: Center(
+        child: new Text(
+          'Continue',
+          style: new TextStyle(fontSize: 20.0, color: Colors.white),
+        ),
+      ),
+      color: Colors.blueAccent,
     );
   }
 }

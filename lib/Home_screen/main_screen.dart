@@ -1,5 +1,5 @@
 import 'package:bubbled_navigation_bar/bubbled_navigation_bar.dart';
-import 'package:eazy_shop/order/order.dart';
+import 'package:eazy_shop/order/index.dart';
 import 'package:eazy_shop/profile/profile_info.dart';
 import 'package:eazy_shop/screens/offers/index.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,7 +9,12 @@ import 'package:flutter/rendering.dart';
 import '../Folders.dart';
 import 'home_view.dart';
 
-List<Widget> _widgetOptions = [HomeView(), Order(), OffersPage(), ProfileInfo()];
+List<Widget> _widgetOptions = [
+  HomeView(),
+  Order(),
+  OffersPage(),
+  ProfileInfo()
+];
 
 class MainScreen extends StatefulWidget {
   @override
@@ -26,11 +31,8 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     _menuPositionController = MenuPositionController(initPosition: 0);
 
-    _pageController = PageController(
-        initialPage: 0,
-        keepPage: false,
-        viewportFraction: 1.0
-    );
+    _pageController =
+        PageController(initialPage: 0, keepPage: false, viewportFraction: 1.0);
     _pageController.addListener(handlePageChange);
 
     super.initState();
@@ -47,7 +49,8 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void checkUserDragging(ScrollNotification scrollNotification) {
-    if (scrollNotification is UserScrollNotification && scrollNotification.direction != ScrollDirection.idle) {
+    if (scrollNotification is UserScrollNotification &&
+        scrollNotification.direction != ScrollDirection.idle) {
       userPageDragging = true;
     } else if (scrollNotification is ScrollEndNotification) {
       userPageDragging = false;
@@ -60,58 +63,71 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BubbledNavigationBar(
-
-        controller: _menuPositionController,
-        initialIndex: _selectedIndex,
-        itemMargin: EdgeInsets.symmetric(horizontal: 8),
-        backgroundColor: Colors.white,
-        defaultBubbleColor: Colors.blue,
-        onTap: (index) {
-          _pageController.animateToPage(
-              index,
-              curve: Curves.easeInOutQuad,
-              duration: Duration(milliseconds: 500)
-          );
-          _onItemTapped(index);
-        },
-        items: <BubbledNavigationBarItem>[
-          BubbledNavigationBarItem(
-            icon:       Icon(CupertinoIcons.home, size: 30, color: Colors.grey),
-            activeIcon: Icon(CupertinoIcons.home, size: 30, color: Colors.white),
-            title: Text('Home', style: TextStyle(color: Colors.white, fontSize: 12),),
-          ),
-          BubbledNavigationBarItem(
-            icon:       Icon(CupertinoIcons.shopping_cart, size: 30, color: Colors.grey),
-            activeIcon: Icon(CupertinoIcons.shopping_cart, size: 30, color: Colors.white),
-            title: Text('Orders', style: TextStyle(color: Colors.white, fontSize: 12),),
-          ),
-          BubbledNavigationBarItem(
-            icon:       Icon(Icons.local_offer, size: 30, color: Colors.grey),
-            activeIcon: Icon(Icons.local_offer, size: 30, color: Colors.white),
-            title: Text('Offers', style: TextStyle(color: Colors.white, fontSize: 12),),
-          ),
-          BubbledNavigationBarItem(
-            icon:       Icon(CupertinoIcons.profile_circled, size: 30, color: Colors.grey),
-            activeIcon: Icon(CupertinoIcons.profile_circled, size: 30, color: Colors.white),
-            title: Text('Profile', style: TextStyle(color: Colors.white, fontSize: 12),),
-          ),
-
-        ],
-
-      ),
-      body: NotificationListener<ScrollNotification>(
-        onNotification: (scrollNotification) {
-          checkUserDragging(scrollNotification);
-        },
-        child: PageView(
-          controller: _pageController,
-          children: _widgetOptions,
-          onPageChanged: (page) {
-            _widgetOptions.elementAt(page);
+        bottomNavigationBar: BubbledNavigationBar(
+          controller: _menuPositionController,
+          initialIndex: _selectedIndex,
+          itemMargin: EdgeInsets.symmetric(horizontal: 8),
+          backgroundColor: Colors.white,
+          defaultBubbleColor: Colors.blue,
+          onTap: (index) {
+            _pageController.animateToPage(index,
+                curve: Curves.easeInOutQuad,
+                duration: Duration(milliseconds: 500));
+            _onItemTapped(index);
           },
+          items: <BubbledNavigationBarItem>[
+            BubbledNavigationBarItem(
+              icon: Icon(CupertinoIcons.home, size: 30, color: Colors.grey),
+              activeIcon:
+                  Icon(CupertinoIcons.home, size: 30, color: Colors.white),
+              title: Text(
+                'Home',
+                style: TextStyle(color: Colors.white, fontSize: 12),
+              ),
+            ),
+            BubbledNavigationBarItem(
+              icon: Icon(CupertinoIcons.shopping_cart,
+                  size: 30, color: Colors.grey),
+              activeIcon: Icon(CupertinoIcons.shopping_cart,
+                  size: 30, color: Colors.white),
+              title: Text(
+                'Orders',
+                style: TextStyle(color: Colors.white, fontSize: 12),
+              ),
+            ),
+            BubbledNavigationBarItem(
+              icon: Icon(Icons.local_offer, size: 30, color: Colors.grey),
+              activeIcon:
+                  Icon(Icons.local_offer, size: 30, color: Colors.white),
+              title: Text(
+                'Offers',
+                style: TextStyle(color: Colors.white, fontSize: 12),
+              ),
+            ),
+            BubbledNavigationBarItem(
+              icon: Icon(CupertinoIcons.profile_circled,
+                  size: 30, color: Colors.grey),
+              activeIcon: Icon(CupertinoIcons.profile_circled,
+                  size: 30, color: Colors.white),
+              title: Text(
+                'Profile',
+                style: TextStyle(color: Colors.white, fontSize: 12),
+              ),
+            ),
+          ],
         ),
-      ));
+        body: NotificationListener<ScrollNotification>(
+          onNotification: (scrollNotification) {
+            checkUserDragging(scrollNotification);
+          },
+          child: PageView(
+            controller: _pageController,
+            children: _widgetOptions,
+            onPageChanged: (page) {
+              _widgetOptions.elementAt(page);
+            },
+          ),
+        ));
   }
 
   Widget getBottomNavBar() {
