@@ -1,6 +1,8 @@
 import 'package:eazy_shop/bloc/cat_bloc.dart';
+import 'package:eazy_shop/bloc/offer_bloc.dart';
 import 'package:eazy_shop/models/cat/cat_list.dart';
 import 'package:eazy_shop/models/home_data_model.dart';
+import 'package:eazy_shop/models/offers/offers_list.dart';
 import 'package:eazy_shop/models/subCat/sub_cat_list.dart';
 import 'package:eazy_shop/screens/search/search_page.dart';
 import 'package:eazy_shop/screens/search_rental/index.dart';
@@ -22,6 +24,7 @@ class _HomeViewState extends State<HomeView> {
         'https://www.moredesign.com/wp-content/uploads/2020/03/1-14.jpg';
     catBloc.getCategories();
     catBloc.getSubCategories();
+    offerBloc.getOffers();
     return SafeArea(
       child: Scaffold(
           backgroundColor: Colors.white,
@@ -210,11 +213,13 @@ class ListContainerWidget extends StatelessWidget {
         ),
         Container(
           height: MediaQuery.of(context).size.height * 0.2,
+          //margin: const EdgeInsets.all(20.0),
           child: StreamBuilder(
               stream: catBloc.categories,
               builder: (context, AsyncSnapshot<Categories> snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
+                      reverse: true,
                       itemBuilder: (context, int index) {
                         return InkWell(
                           onTap: () {
@@ -223,7 +228,9 @@ class ListContainerWidget extends StatelessWidget {
                                 MaterialPageRoute(
                                     builder: (ctx) => SearchRentalPage(
                                         categoryId:
-                                            snapshot.data.data[index].id)));
+                                            snapshot.data.data[index].id,
+                                        pageTitle: snapshot
+                                            .data.data[index].categoryName)));
                           },
                           child: Container(
                             margin: const EdgeInsets.symmetric(
@@ -233,10 +240,15 @@ class ListContainerWidget extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Container(
-                                  child: Image.asset(
-                                    model[index].imageUrl,
-                                    fit: BoxFit.contain,
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Image.network(
+                                    snapshot.data.data[index].image,
+                                    fit: BoxFit.cover,
                                   ),
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.2,
+                                  height:
+                                      MediaQuery.of(context).size.width * 0.2,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(50.0),
                                       color: Colors.white,
@@ -246,7 +258,6 @@ class ListContainerWidget extends StatelessWidget {
                                             blurRadius: 2.0,
                                             spreadRadius: 4.0)
                                       ]),
-                                  padding: const EdgeInsets.all(10.0),
                                 ),
                                 SizedBox(
                                   height: 10.0,
@@ -326,9 +337,9 @@ class ListContainerWidget2 extends StatelessWidget {
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 10.0),
           height: MediaQuery.of(context).size.height * 0.25,
-          child: StreamBuilder(
-              stream: catBloc.subCategories,
-              builder: (context, AsyncSnapshot<SubCategories> snapshot) {
+          child: StreamBuilder<Offers>(
+              stream: offerBloc.categories,
+              builder: (context, AsyncSnapshot<Offers> snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.none:
                   case ConnectionState.waiting:
@@ -357,13 +368,12 @@ class ListContainerWidget2 extends StatelessWidget {
                                     Container(
                                       child: Column(
                                         children: [
-                                          Image.asset(
-                                            model[index].imageUrl,
+                                          Image.network(
+                                            snapshot.data.data[index].image,
                                             fit: BoxFit.contain,
                                           ),
                                           Text(
-                                            snapshot.data.data[index]
-                                                .subcategoryName,
+                                            snapshot.data.data[index].title,
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
@@ -371,8 +381,10 @@ class ListContainerWidget2 extends StatelessWidget {
                                                 fontSize: 12.0),
                                           ),
                                           Text(
-                                            snapshot.data.data[index].catName,
+                                            snapshot
+                                                .data.data[index].description,
                                             textAlign: TextAlign.center,
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.grey.shade400,

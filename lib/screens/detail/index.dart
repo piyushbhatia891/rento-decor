@@ -59,8 +59,8 @@ class ProductDetailPageState extends State<ProductDetailPage> {
                         height: MediaQuery.of(context).size.height * 0.3,
                         width: MediaQuery.of(context).size.width,
                         child: Image.network(
-                          "http://yontechsoftwares.com/share/swastik/assets/uploads/${snapshot.data.data[0].img1}",
-                          fit: BoxFit.cover,
+                          "${snapshot.data.data[0].img1}",
+                          fit: BoxFit.fill,
                         ),
                         decoration: BoxDecoration(
                             boxShadow: [

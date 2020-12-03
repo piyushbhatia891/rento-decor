@@ -11,8 +11,9 @@ import 'package:google_fonts/google_fonts.dart';
 import '../detail/index.dart';
 
 class SearchRentalPage extends StatefulWidget {
-  final String categoryId, subCategoryId;
-  SearchRentalPage({this.categoryId = "0", this.subCategoryId = "0"});
+  final String categoryId, subCategoryId, pageTitle;
+  SearchRentalPage(
+      {this.categoryId = "0", this.subCategoryId = "0", this.pageTitle});
   SearchRentalPageState createState() => SearchRentalPageState();
 }
 
@@ -55,7 +56,7 @@ class SearchRentalPageState extends State<SearchRentalPage> {
                       color: Colors.white,
                     ),
                   ),
-                  Text("Search",
+                  Text(widget.pageTitle,
                       style: GoogleFonts.montserrat(
                           fontSize: 20.0,
                           color: Colors.white,
@@ -157,7 +158,7 @@ class SearchRentalPageState extends State<SearchRentalPage> {
                                                 .size
                                                 .width,
                                             child: Image.network(
-                                              "http://yontechsoftwares.com/share/swastik/assets/uploads/${snapshot.data.data[index].img1}",
+                                              "${snapshot.data.data[index].img1}",
                                               fit: BoxFit.fitWidth,
                                             ))),
                                     Text(

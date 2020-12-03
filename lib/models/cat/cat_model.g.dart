@@ -13,6 +13,7 @@ Category _$CategoryFromJson(Map<String, dynamic> json) {
     json['type'] as String,
     json['status'] as String,
     json['isDeleted'] as String,
+    json['image'] as String,
   );
 }
 
@@ -22,4 +23,5 @@ Map<String, dynamic> _$CategoryToJson(Category instance) => <String, dynamic>{
       'type': instance.type,
       'status': instance.status,
       'isDeleted': instance.isDeleted,
+      'image': instance.image,
     };

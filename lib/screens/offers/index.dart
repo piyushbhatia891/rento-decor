@@ -85,10 +85,13 @@ class OffersPageState extends State<OffersPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
-                                child: Image.asset(
-                              "assets/sofa.jpg",
+                                child: Image.network(
+                              "${snapshot.data.data[0].image}",
                               fit: BoxFit.cover,
                             )),
+                            SizedBox(
+                              height: 10.0,
+                            ),
                             Text(snapshot.data.data[0].description),
                             SizedBox(
                               height: 10.0,

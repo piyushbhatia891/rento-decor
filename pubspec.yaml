@@ -37,6 +37,7 @@ dependencies:
   http:
   rxdart:
   json_annotation:
+  shared_preferences:
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -6,8 +6,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class UserMobileVerify extends StatelessWidget {
+class UserMobileVerify extends StatefulWidget {
+  UserMobileVerifyState createState() => UserMobileVerifyState();
+}
+
+class UserMobileVerifyState extends State<UserMobileVerify> {
+  String mobileNumber = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,6 +60,7 @@ class UserMobileVerify extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      initialValue: mobileNumber,
                       style: TextStyle(fontWeight: FontWeight.bold),
                       keyboardType: TextInputType.number,
                       inputFormatters: <TextInputFormatter>[
@@ -62,9 +69,14 @@ class UserMobileVerify extends StatelessWidget {
                       decoration: InputDecoration(
                           labelText: "Your Phone number with +91",
                           icon: Icon(Icons.phone_iphone)),
+                      onChanged: (val) {
+                        setState(() {
+                          mobileNumber = val;
+                        });
+                      },
                     ),
                   ),
-                  SendOtpBoxContainer()
+                  SendOtpBoxContainer(mobileNumber: mobileNumber)
                 ],
               ),
             ),
@@ -76,6 +88,8 @@ class UserMobileVerify extends StatelessWidget {
 }
 
 class SendOtpBoxContainer extends StatefulWidget {
+  final String mobileNumber;
+  SendOtpBoxContainer({this.mobileNumber});
   SendOtpBoxContainerState createState() => SendOtpBoxContainerState();
 }
 
@@ -88,16 +102,35 @@ class SendOtpBoxContainerState extends State<SendOtpBoxContainer> {
       child: RaisedButton(
         onPressed: enabled
             ? () async {
-                setState(() {
-                  buttonText = "Loading..";
-                  enabled = false;
-                });
-                getOtp("9821976291").then((value) {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (ctx) => OTPVerification()));
-                }).catchError((error) {
-                  print("error: " + error.toString());
-                });
+                widget.mobileNumber == ""
+                    ? showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text("Number Invalid"),
+                            content: Text("Please enter valid Number"),
+                            actions: [
+                              RaisedButton(
+                                onPressed: () => Navigator.pop(context),
+                                color: Colors.blue,
+                                textColor: Colors.white,
+                                child: Center(child: Text("Ok")),
+                              )
+                            ],
+                          );
+                        })
+                    : setState(() {
+                        buttonText = "Loading..";
+                        enabled = false;
+                        getOtp(widget.mobileNumber).then((value) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (ctx) => OTPVerification()));
+                        }).catchError((error) {
+                          print("error: " + error.toString());
+                        });
+                      });
               }
             : null,
         shape: RoundedRectangleBorder(

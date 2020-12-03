@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:eazy_shop/models/login/send_otp.dart';
+import 'package:eazy_shop/models/login/user_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 const String _baseUrl =
     "http://yontechsoftwares.com/share/swastik/index.php/Api/sendOtp";
@@ -21,32 +23,32 @@ Future<SendOtpModel> getOtp(String number) async {
 
   if (response.statusCode == 200) {
     final parsed = jsonDecode(response.body);
-
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString("mobile", number);
     return SendOtpModel.fromJson(parsed);
   } else {
     throw Exception('Failed to Get Otp.');
   }
 }
 
-Future<SendOtpModel> verifyOtp(String otp, String mobile) async {
+Future<UserModel> verifyOtp(int mobile, String otp) async {
   http.Client client = http.Client();
   final http.Response response = await client.post(
     "http://yontechsoftwares.com/share/swastik/index.php/Api/verifyOtp",
-    headers: <String, String>{
+    /*headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(<String, String>{
+    },*/
+    body: jsonEncode(<String, dynamic>{
       'mobile': mobile,
-      'otp': '1111',
       'userType': 'Customer',
-      'apiVersion': '1.0'
+      'otp': otp
     }),
   );
 
   if (response.statusCode == 200) {
     final parsed = jsonDecode(response.body);
 
-    return SendOtpModel.fromJson(parsed);
+    return UserModel.fromJson(parsed);
   } else {
     throw Exception('Failed to Get Otp.');
   }

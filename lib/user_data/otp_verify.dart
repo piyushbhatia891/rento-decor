@@ -5,8 +5,26 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class OTPVerification extends StatelessWidget {
+class OTPVerification extends StatefulWidget {
+  OTPVerificationState createState() => OTPVerificationState();
+}
+
+class OTPVerificationState extends State<OTPVerification> {
+  String otp = '';
+  String mobile = '';
+  SharedPreferences _preferences;
+  void initState() {
+    super.initState();
+  }
+
+  setPreferenceValue() async {
+    setState(() {
+      mobile = _preferences.getString("mobile");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +72,7 @@ class OTPVerification extends StatelessWidget {
                             fontSize: 14.0, color: Colors.grey),
                         children: [
                           TextSpan(
-                              text: "+91 - 9123456789 ",
+                              text: "${mobile}",
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 14.0,
@@ -62,6 +80,12 @@ class OTPVerification extends StatelessWidget {
                         ]),
                   ),
                   TextFormField(
+                    initialValue: otp,
+                    onChanged: (val) {
+                      setState(() {
+                        otp = val;
+                      });
+                    },
                     style: TextStyle(fontWeight: FontWeight.bold),
                     keyboardType: TextInputType.number,
                     inputFormatters: <TextInputFormatter>[
@@ -74,7 +98,9 @@ class OTPVerification extends StatelessWidget {
                   SizedBox(
                     height: 15,
                   ),
-                  VerifyButton()
+                  VerifyButton(
+                    otp: otp,
+                  )
                 ],
               ),
             ),
@@ -86,6 +112,8 @@ class OTPVerification extends StatelessWidget {
 }
 
 class VerifyButton extends StatefulWidget {
+  final String otp;
+  VerifyButton({this.otp});
   VerifyButtonState createState() => VerifyButtonState();
 }
 
@@ -96,17 +124,13 @@ class VerifyButtonState extends State<VerifyButton> {
   Widget build(BuildContext context) {
     return RaisedButton(
       onPressed: enabled
-          ? () {
+          ? () async {
               setState(() {
                 buttonText = "Loading..";
                 enabled = false;
-                verifyOtp("1111", "9821976291").then((value) {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (ctx) => MainScreen()));
-                }).catchError((error) {
-                  print("error: " + error.toString());
-                });
               });
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (ctx) => MainScreen()));
             }
           : null,
       shape: RoundedRectangleBorder(
