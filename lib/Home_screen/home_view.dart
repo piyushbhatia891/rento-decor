@@ -25,45 +25,48 @@ class _HomeViewState extends State<HomeView> {
     catBloc.getCategories();
     catBloc.getSubCategories();
     offerBloc.getOffers();
-    return SafeArea(
-      child: Scaffold(
-          backgroundColor: Colors.white,
-          body: SingleChildScrollView(
-            child: Column(
-              //mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Stack(
-                  //fit: StackFit.loose,
-                  children: [
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.30,
-                      color: Colors.white,
-                    ),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.25,
-                      decoration: BoxDecoration(
-                          color: Colors.blue,
-                          gradient: LinearGradient(
-                              colors: [
-                                HexColor("#2EB2F2"),
-                                HexColor("#2361AE")
-                              ],
-                              begin: Alignment.bottomLeft,
-                              end: Alignment.topRight),
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(20),
-                              bottomRight: Radius.circular(20))),
-                    ),
-                    _appBar(context),
-                    _headerSection(context),
-                    _textWidgetBox(context)
-                  ],
-                ),
-                ListContainerWidget(),
-                ListContainerWidget2()
-              ],
-            ),
-          )),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: SafeArea(
+        child: Scaffold(
+            backgroundColor: Colors.white,
+            body: SingleChildScrollView(
+              child: Column(
+                //mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Stack(
+                    //fit: StackFit.loose,
+                    children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.30,
+                        color: Colors.white,
+                      ),
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.25,
+                        decoration: BoxDecoration(
+                            color: Colors.blue,
+                            gradient: LinearGradient(
+                                colors: [
+                                  HexColor("#2EB2F2"),
+                                  HexColor("#2361AE")
+                                ],
+                                begin: Alignment.bottomLeft,
+                                end: Alignment.topRight),
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(20))),
+                      ),
+                      _appBar(context),
+                      _headerSection(context),
+                      _textWidgetBox(context)
+                    ],
+                  ),
+                  ListContainerWidget(),
+                  ListContainerWidget2()
+                ],
+              ),
+            )),
+      ),
     );
   }
 
@@ -223,14 +226,25 @@ class ListContainerWidget extends StatelessWidget {
                       itemBuilder: (context, int index) {
                         return InkWell(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (ctx) => SearchRentalPage(
-                                        categoryId:
-                                            snapshot.data.data[index].id,
-                                        pageTitle: snapshot
-                                            .data.data[index].categoryName)));
+                            if (snapshot.data.data[index].type == "0") {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (ctx) => SearchRentalPage(
+                                          categoryId:
+                                              snapshot.data.data[index].id,
+                                          pageTitle: snapshot
+                                              .data.data[index].categoryName)));
+                            } else {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (ctx) => SearchPage(
+                                          categoryId:
+                                              snapshot.data.data[index].id,
+                                          pageTitle: snapshot
+                                              .data.data[index].categoryName)));
+                            }
                           },
                           child: Container(
                             margin: const EdgeInsets.symmetric(

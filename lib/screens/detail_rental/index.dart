@@ -9,12 +9,14 @@ import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
 class ProductRentalPage extends StatefulWidget {
+  final String id;
+  ProductRentalPage({this.id});
   ProductRentalPageState createState() => ProductRentalPageState();
 }
 
 class ProductRentalPageState extends State<ProductRentalPage> {
   Widget build(BuildContext context) {
-    productBloc.getProductById("2");
+    productBloc.getProductById(widget.id);
     return SafeArea(
       top: false,
       child: Scaffold(
@@ -49,6 +51,8 @@ class ProductRentalPageState extends State<ProductRentalPage> {
             stream: productBloc.categories,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
+                if (snapshot.data.data.length == 0)
+                  return Center(child: Text("No Info Found For Product"));
                 return ListView(
                   padding: const EdgeInsets.all(0.0),
                   children: [

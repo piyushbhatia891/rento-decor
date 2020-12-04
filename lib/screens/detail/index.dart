@@ -51,6 +51,8 @@ class ProductDetailPageState extends State<ProductDetailPage> {
             stream: productBloc.categories,
             builder: (context, AsyncSnapshot<Products> snapshot) {
               if (snapshot.hasData) {
+                if (snapshot.data.data.length == 0)
+                  return Center(child: Text("No Info Found For Product"));
                 return ListView(
                   padding: const EdgeInsets.all(0.0),
                   children: [

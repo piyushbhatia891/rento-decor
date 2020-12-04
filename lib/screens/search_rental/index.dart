@@ -139,7 +139,7 @@ class SearchRentalPageState extends State<SearchRentalPage> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (ctx) => ProductDetailPage(
+                                        builder: (ctx) => ProductRentalPage(
                                             id: snapshot.data.data[index].id)));
                               },
                               child: Container(
@@ -159,7 +159,7 @@ class SearchRentalPageState extends State<SearchRentalPage> {
                                                 .width,
                                             child: Image.network(
                                               "${snapshot.data.data[index].img1}",
-                                              fit: BoxFit.fitWidth,
+                                              fit: BoxFit.fill,
                                             ))),
                                     Text(
                                       snapshot.data.data[index].name,
