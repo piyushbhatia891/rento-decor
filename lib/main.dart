@@ -11,11 +11,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        fontFamily: 'Montserrat'
-      ),
+      theme: ThemeData(fontFamily: 'Montserrat'),
       debugShowCheckedModeBanner: false,
-      title: 'Easy Shop',
+      title: 'Rento Decor',
       home: SplashScreen(),
       //home: ProfileInfo(),
     );

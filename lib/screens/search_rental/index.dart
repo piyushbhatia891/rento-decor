@@ -8,8 +8,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../detail/index.dart';
-
 class SearchRentalPage extends StatefulWidget {
   final String categoryId, subCategoryId, pageTitle;
   SearchRentalPage(

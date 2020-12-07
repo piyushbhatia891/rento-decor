@@ -47,7 +47,7 @@ class SearchPageState extends State<SearchPage> {
                       color: Colors.white,
                     ),
                   ),
-                  Text("Search",
+                  Text(widget.pageTitle,
                       style: GoogleFonts.montserrat(
                           fontSize: 20.0,
                           color: Colors.white,
@@ -109,7 +109,7 @@ class SearchPageState extends State<SearchPage> {
                                       width: MediaQuery.of(context).size.width,
                                       child: Image.network(
                                         snapshot.data.data[index].img1,
-                                        fit: BoxFit.cover,
+                                        fit: BoxFit.fill,
                                       ))),
                               SizedBox(
                                 height: 10.0,

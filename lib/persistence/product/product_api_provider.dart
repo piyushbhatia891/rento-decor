@@ -19,7 +19,7 @@ class ProductApiProvider {
         /*headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },*/
-        body: jsonEncode(<String, String>{
+        body: jsonEncode(<String, dynamic>{
           'id': id,
           'token': '',
           'apiVersion': '1.0'

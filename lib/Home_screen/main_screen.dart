@@ -62,72 +62,75 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        bottomNavigationBar: BubbledNavigationBar(
-          controller: _menuPositionController,
-          initialIndex: _selectedIndex,
-          itemMargin: EdgeInsets.symmetric(horizontal: 8),
-          backgroundColor: Colors.white,
-          defaultBubbleColor: Colors.blue,
-          onTap: (index) {
-            _pageController.animateToPage(index,
-                curve: Curves.easeInOutQuad,
-                duration: Duration(milliseconds: 500));
-            _onItemTapped(index);
-          },
-          items: <BubbledNavigationBarItem>[
-            BubbledNavigationBarItem(
-              icon: Icon(CupertinoIcons.home, size: 30, color: Colors.grey),
-              activeIcon:
-                  Icon(CupertinoIcons.home, size: 30, color: Colors.white),
-              title: Text(
-                'Home',
-                style: TextStyle(color: Colors.white, fontSize: 12),
-              ),
-            ),
-            BubbledNavigationBarItem(
-              icon: Icon(CupertinoIcons.shopping_cart,
-                  size: 30, color: Colors.grey),
-              activeIcon: Icon(CupertinoIcons.shopping_cart,
-                  size: 30, color: Colors.white),
-              title: Text(
-                'Orders',
-                style: TextStyle(color: Colors.white, fontSize: 12),
-              ),
-            ),
-            BubbledNavigationBarItem(
-              icon: Icon(Icons.local_offer, size: 30, color: Colors.grey),
-              activeIcon:
-                  Icon(Icons.local_offer, size: 30, color: Colors.white),
-              title: Text(
-                'Offers',
-                style: TextStyle(color: Colors.white, fontSize: 12),
-              ),
-            ),
-            BubbledNavigationBarItem(
-              icon: Icon(CupertinoIcons.profile_circled,
-                  size: 30, color: Colors.grey),
-              activeIcon: Icon(CupertinoIcons.profile_circled,
-                  size: 30, color: Colors.white),
-              title: Text(
-                'Profile',
-                style: TextStyle(color: Colors.white, fontSize: 12),
-              ),
-            ),
-          ],
-        ),
-        body: NotificationListener<ScrollNotification>(
-          onNotification: (scrollNotification) {
-            checkUserDragging(scrollNotification);
-          },
-          child: PageView(
-            controller: _pageController,
-            children: _widgetOptions,
-            onPageChanged: (page) {
-              _widgetOptions.elementAt(page);
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+          bottomNavigationBar: BubbledNavigationBar(
+            controller: _menuPositionController,
+            initialIndex: _selectedIndex,
+            itemMargin: EdgeInsets.symmetric(horizontal: 8),
+            backgroundColor: Colors.white,
+            defaultBubbleColor: Colors.blue,
+            onTap: (index) {
+              _pageController.animateToPage(index,
+                  curve: Curves.easeInOutQuad,
+                  duration: Duration(milliseconds: 500));
+              _onItemTapped(index);
             },
+            items: <BubbledNavigationBarItem>[
+              BubbledNavigationBarItem(
+                icon: Icon(CupertinoIcons.home, size: 30, color: Colors.grey),
+                activeIcon:
+                    Icon(CupertinoIcons.home, size: 30, color: Colors.white),
+                title: Text(
+                  'Home',
+                  style: TextStyle(color: Colors.white, fontSize: 12),
+                ),
+              ),
+              BubbledNavigationBarItem(
+                icon: Icon(CupertinoIcons.shopping_cart,
+                    size: 30, color: Colors.grey),
+                activeIcon: Icon(CupertinoIcons.shopping_cart,
+                    size: 30, color: Colors.white),
+                title: Text(
+                  'Orders',
+                  style: TextStyle(color: Colors.white, fontSize: 12),
+                ),
+              ),
+              BubbledNavigationBarItem(
+                icon: Icon(Icons.local_offer, size: 30, color: Colors.grey),
+                activeIcon:
+                    Icon(Icons.local_offer, size: 30, color: Colors.white),
+                title: Text(
+                  'Offers',
+                  style: TextStyle(color: Colors.white, fontSize: 12),
+                ),
+              ),
+              BubbledNavigationBarItem(
+                icon: Icon(CupertinoIcons.profile_circled,
+                    size: 30, color: Colors.grey),
+                activeIcon: Icon(CupertinoIcons.profile_circled,
+                    size: 30, color: Colors.white),
+                title: Text(
+                  'Profile',
+                  style: TextStyle(color: Colors.white, fontSize: 12),
+                ),
+              ),
+            ],
           ),
-        ));
+          body: NotificationListener<ScrollNotification>(
+            onNotification: (scrollNotification) {
+              checkUserDragging(scrollNotification);
+            },
+            child: PageView(
+              controller: _pageController,
+              children: _widgetOptions,
+              onPageChanged: (page) {
+                _widgetOptions.elementAt(page);
+              },
+            ),
+          )),
+    );
   }
 
   Widget getBottomNavBar() {

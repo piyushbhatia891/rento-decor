@@ -13,6 +13,10 @@ class ProductBloc {
   final _catFetcher = PublishSubject<Products>();
   Stream<Products> get categories => _catFetcher.stream;
 
+  Future fetchProduct(id) async {
+    return await _repository.getProductById(id);
+  }
+
   getProductById(id) async {
     Products weatherResponse = await _repository.getProductById(id);
     _catFetcher.sink.add(weatherResponse);

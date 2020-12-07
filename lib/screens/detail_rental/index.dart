@@ -1,6 +1,7 @@
 import 'package:eazy_shop/bloc/product_bloc.dart';
 import 'package:eazy_shop/cart/index.dart';
 import 'package:eazy_shop/models/product/product_list.dart';
+import 'package:eazy_shop/services/sqflite/database_helper.dart';
 import 'package:eazy_shop/utils/color/color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,9 +27,69 @@ class ProductRentalPageState extends State<ProductRentalPage> {
           height: MediaQuery.of(context).size.height * 0.07,
           child: Center(
             child: InkWell(
-              onTap: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (ctx) => CartPage()));
+              onTap: () async {
+                try {
+                  int inserted = await DatabaseHelper.instance.addtoCart({
+                    DatabaseHelper.id: int.parse(widget.id),
+                    DatabaseHelper.quantity: 1
+                  });
+                  if (inserted != 0)
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text("Product Added"),
+                            content: Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.2,
+                                child: Center(
+                                    child:
+                                        Text("Product is Successfully added"))),
+                            actions: [
+                              RaisedButton(
+                                color: Colors.blue,
+                                onPressed: () => Navigator.pop(context),
+                                child: Center(
+                                  child: Text("Ok"),
+                                ),
+                              )
+                            ],
+                          );
+                        });
+                  else
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text("Already Exists"),
+                            content: Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.2,
+                                child: Center(
+                                    child: Text("Product Already Exists"))),
+                            actions: [
+                              RaisedButton(
+                                color: Colors.blue,
+                                onPressed: () => Navigator.pop(context),
+                                child: Center(
+                                  child: Text("Ok"),
+                                ),
+                              )
+                            ],
+                          );
+                        });
+                } on Exception catch (e) {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text("Error"),
+                          content: Text("There was an error encountered"),
+                        );
+                      });
+                }
+                /*Navigator.push(
+                    context, MaterialPageRoute(builder: (ctx) => CartPage()));*/
               },
               child: Container(
                 child: Center(
