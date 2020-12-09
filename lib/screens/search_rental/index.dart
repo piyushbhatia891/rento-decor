@@ -118,38 +118,29 @@ class SearchRentalPageState extends State<SearchRentalPage>
           ),
         ),
         body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             map != null
                 ? Container(
                     height: MediaQuery.of(context).size.height * 0.08,
-                    margin: const EdgeInsets.all(10.0),
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: map.length,
-                        itemBuilder: (context, int index) {
-                          return Container(
-                            height: MediaQuery.of(context).size.height * 0.08,
-                            width: MediaQuery.of(context).size.width,
-                            margin: EdgeInsets.only(left: 60),
-                            child: TabBar(
-                              onTap: (val) {
-                                setState(() {
-                                  selectedTab = map[val].id;
-                                });
-                              },
-                              tabs: myTabs,
-                              unselectedLabelColor: const Color(0xffacb3bf),
-                              indicatorColor: Color(0xFFffac81),
-                              labelColor: Colors.black,
-                              indicatorSize: TabBarIndicatorSize.tab,
-                              indicatorWeight: 3.0,
-                              indicatorPadding: EdgeInsets.all(10),
-                              isScrollable: false,
-                              controller: _tabController,
-                            ),
-                          );
-                        }),
+                    width: MediaQuery.of(context).size.width,
+                    //margin: EdgeInsets.only(left: 60),
+                    child: TabBar(
+                      onTap: (val) {
+                        setState(() {
+                          selectedTab = map[val].id;
+                        });
+                      },
+                      tabs: myTabs,
+                      unselectedLabelColor: const Color(0xffacb3bf),
+                      indicatorColor: Color(0xFFffac81),
+                      labelColor: Colors.black,
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      indicatorWeight: 3.0,
+                      indicatorPadding: EdgeInsets.all(10),
+                      isScrollable: false,
+                      controller: _tabController,
+                    ),
                   )
                 : Center(
                     child: Text("Loading.."),

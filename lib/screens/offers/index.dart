@@ -1,6 +1,7 @@
 import 'package:eazy_shop/models/offers/offers_list.dart';
 import 'package:eazy_shop/utils/color/color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:eazy_shop/bloc/offer_bloc.dart';
 
@@ -92,7 +93,7 @@ class OffersPageState extends State<OffersPage> {
                             SizedBox(
                               height: 10.0,
                             ),
-                            Text(snapshot.data.data[0].description),
+                            Html(data: snapshot.data.data[0].description),
                             SizedBox(
                               height: 10.0,
                             ),

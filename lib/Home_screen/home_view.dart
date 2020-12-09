@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eazy_shop/bloc/cat_bloc.dart';
 import 'package:eazy_shop/bloc/offer_bloc.dart';
 import 'package:eazy_shop/models/cat/cat_list.dart';
@@ -217,7 +218,6 @@ class ListContainerWidget extends StatelessWidget {
               builder: (context, AsyncSnapshot<Categories> snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
-                      reverse: true,
                       itemBuilder: (context, int index) {
                         return InkWell(
                           onTap: () {
@@ -258,8 +258,7 @@ class ListContainerWidget extends StatelessWidget {
                                         fit: BoxFit.cover,
                                         image: NetworkImage(
                                             snapshot.data.data[index].image)),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8.0)),
+                                    borderRadius: BorderRadius.circular(50.0),
                                     color: Colors.redAccent,
                                   ),
                                 ),
@@ -325,7 +324,7 @@ class ListContainerWidget2 extends StatelessWidget {
           ]),
         ),
         Container(
-          height: MediaQuery.of(context).size.height * 0.2,
+          height: MediaQuery.of(context).size.height * 0.22,
           //margin: const EdgeInsets.all(20.0),
           child: StreamBuilder(
               stream: offerBloc.categories,
@@ -349,6 +348,16 @@ class ListContainerWidget2 extends StatelessWidget {
                             margin: const EdgeInsets.symmetric(
                                 horizontal: 10.0, vertical: 5.0),
                             width: MediaQuery.of(context).size.width * 0.3,
+                            padding: const EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Colors.black54,
+                                      blurRadius: 5.0,
+                                      spreadRadius: 1.0)
+                                ]),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
@@ -362,9 +371,6 @@ class ListContainerWidget2 extends StatelessWidget {
                                         fit: BoxFit.cover,
                                         image: NetworkImage(
                                             snapshot.data.data[index].image)),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8.0)),
-                                    color: Colors.redAccent,
                                   ),
                                 ),
                                 SizedBox(
