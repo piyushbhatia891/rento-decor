@@ -1,4 +1,3 @@
-import 'package:eazy_shop/models/cat/cat_model.dart';
 import 'package:eazy_shop/models/subCat/sub_cat.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -8,8 +7,8 @@ part 'sub_cat_list.g.dart';
 class SubCategories {
   String result, message;
 
-  List<SubCategory> data;
-  SubCategories({this.result, this.message, this.data});
+  List<SubCategory> subcategories;
+  SubCategories({this.result, this.message, this.subcategories});
   factory SubCategories.fromJson(Map<String, dynamic> json) =>
       _$SubCategoriesFromJson(json);
 

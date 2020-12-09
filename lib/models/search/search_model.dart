@@ -6,6 +6,7 @@ part 'search_model.g.dart';
 class SearchModel {
   String id,
       name,
+      subCategoryId,
       categoryId,
       labelId,
       price,
@@ -40,6 +41,7 @@ class SearchModel {
       this.description,
       this.skuNo,
       this.material,
+      this.subCategoryId,
       this.isActive,
       this.subcatName,
       this.lableName,

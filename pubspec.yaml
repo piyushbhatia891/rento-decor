@@ -39,6 +39,7 @@ dependencies:
   json_annotation:
   shared_preferences:
   sqflite:
+  flutter_html:
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -12,7 +12,7 @@ class ApiProvider {
       "http://yontechsoftwares.com/share/swastik/index.php/Api/allCategories";
 
   final _baseUrl_SubCategoriesApi =
-      "http://yontechsoftwares.com/share/swastik/index.php/Api/allSubCategories";
+      "http://yontechsoftwares.com/share/swastik/index.php/Api/getSubCategoryByCategoryId";
 
   Future<Categories> getCategories() async {
     final response = await client.get(
@@ -27,9 +27,15 @@ class ApiProvider {
     }
   }
 
-  Future<SubCategories> getSubCategories() async {
-    final response = await client.get(
-        "$_baseUrl_SubCategoriesApi"); // Make the network call asynchronously to fetch the London weather data.
+  Future<SubCategories> getSubCategoriesByCategoryId(String categoryId) async {
+    final response = await client.post(
+      "$_baseUrl_SubCategoriesApi",
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+          <String, String>{'id': categoryId, 'token': '', 'apiVersion': '1.0'}),
+    ); // Make the network call asynchronously to fetch the London weather data.
     print(response.body.toString());
 
     if (response.statusCode == 200) {

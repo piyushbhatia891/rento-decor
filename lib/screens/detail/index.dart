@@ -6,6 +6,7 @@ import 'package:eazy_shop/utils/color/color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
@@ -173,11 +174,8 @@ class ProductDetailPageState extends State<ProductDetailPage> {
                                   snapshot.data.data[0].name,
                                   style: TextStyle(fontSize: 20.0),
                                 ),
-                                Text(
-                                  snapshot.data.data[0].description,
-                                  style: TextStyle(
-                                      fontSize: 14.0,
-                                      color: Colors.grey.shade500),
+                                Html(
+                                  data: snapshot.data.data[0].description,
                                 ),
                               ],
                             ),
@@ -310,12 +308,8 @@ class ProductDetailPageState extends State<ProductDetailPage> {
                     Padding(
                       padding: const EdgeInsets.only(
                           left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
-                      child: Text(
-                        snapshot.data.data[0].description,
-                        style: TextStyle(
-                            fontSize: 16.0,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.bold),
+                      child: Html(
+                        data: snapshot.data.data[0].description,
                       ),
                     ),
                   ],

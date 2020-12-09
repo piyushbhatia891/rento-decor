@@ -6,5 +6,6 @@ class Repository {
   ApiProvider appApiProvider = ApiProvider();
 
   Future<Categories> getCategories() => appApiProvider.getCategories();
-  Future<SubCategories> getSubCategories() => appApiProvider.getSubCategories();
+  Future<SubCategories> getSubCategoriesByCategoryId(categoryId) =>
+      appApiProvider.getSubCategoriesByCategoryId(categoryId);
 }

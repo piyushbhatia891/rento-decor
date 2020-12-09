@@ -2,6 +2,7 @@ import 'package:eazy_shop/inherited/cart_container.dart';
 import 'package:eazy_shop/models/cart/cart_product_model.dart';
 import 'package:eazy_shop/services/sqflite/database_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class CartItem extends StatefulWidget {
   CartProductModel product;
@@ -42,18 +43,19 @@ class CartItemState extends State<CartItem> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  widget.product.product.name,
-                  style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold),
-                ),
-                Text(widget.product.product.description,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Text(
+                    widget.product.product.name,
                     style: TextStyle(
-                        color: Colors.grey.shade600,
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.bold)),
+                        color: Colors.grey,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Html(
+                  data: widget.product.product.description,
+                ),
                 Expanded(child: SizedBox()),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,

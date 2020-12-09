@@ -1,7 +1,9 @@
+import 'package:eazy_shop/bloc/cat_bloc.dart';
 import 'package:eazy_shop/bloc/search_bloc.dart';
 import 'package:eazy_shop/cart/index.dart';
+import 'package:eazy_shop/models/search/search_model.dart';
 import 'package:eazy_shop/models/search/search_model_list.dart';
-import 'package:eazy_shop/screens/detail/index.dart';
+import 'package:eazy_shop/models/subCat/sub_cat.dart';
 import 'package:eazy_shop/screens/detail_rental/index.dart';
 import 'package:eazy_shop/utils/color/color.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,9 +17,39 @@ class SearchRentalPage extends StatefulWidget {
   SearchRentalPageState createState() => SearchRentalPageState();
 }
 
-class SearchRentalPageState extends State<SearchRentalPage> {
+class SearchRentalPageState extends State<SearchRentalPage>
+    with TickerProviderStateMixin {
+  TabController _tabController;
+  Map<int, SubCategory> map = null;
+  List<Tab> myTabs;
+  String selectedTab = "";
+  bool loading = true;
   void initState() {
     super.initState();
+    initializeTabController();
+  }
+
+  initializeTabController() async {
+    List<SubCategory> list =
+        await catBloc.getSubCategoriesByCategoryId(widget.categoryId);
+    setState(() {
+      map = list.length > 0 ? list.asMap() : {};
+
+      myTabs = map.values.map((e) {
+        return Tab(
+          text: e.subcategoryName,
+        );
+      }).toList();
+      selectedTab = map.length > 0 ? map.values.first.id : "";
+      _tabController =
+          TabController(length: list.length, vsync: this, initialIndex: 0);
+      loading = false;
+    });
+  }
+
+  void dispose() {
+    super.dispose();
+    _tabController?.dispose();
   }
 
   Widget build(BuildContext context) {
@@ -88,142 +120,168 @@ class SearchRentalPageState extends State<SearchRentalPage> {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              margin:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-              height: MediaQuery.of(context).size.height * 0.08,
-              width: MediaQuery.of(context).size.width,
-              child: ListView.builder(
-                itemBuilder: (context, int index) {
-                  return Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                    child: Chip(
-                        backgroundColor: Colors.white,
-                        shape: StadiumBorder(
-                            side: BorderSide(color: Color(0xFF0E96D9))),
-                        //padding: const EdgeInsets.all(10.0),
-
-                        label: Text("Plastic Chair",
-                            style: TextStyle(
-                                color: Colors.blue,
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w700))),
-                  );
-                },
-                scrollDirection: Axis.horizontal,
-              ),
-            ),
-            Expanded(
-              child: StreamBuilder<SearchList>(
-                  stream: searchBloc.searchList,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      if (snapshot.data.data.length == 0)
-                        return Center(child: Text("No Products Found"));
-                      return GridView.builder(
-                          itemCount: snapshot.data.data.length,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20.0, vertical: 20.0),
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 0.67,
-                            crossAxisSpacing: 15,
-                            mainAxisSpacing: 5,
-                          ),
-                          itemBuilder: (context, int index) {
-                            return InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (ctx) => ProductRentalPage(
-                                            id: snapshot.data.data[index].id)));
+            map != null
+                ? Container(
+                    height: MediaQuery.of(context).size.height * 0.08,
+                    margin: const EdgeInsets.all(10.0),
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: map.length,
+                        itemBuilder: (context, int index) {
+                          return Container(
+                            height: MediaQuery.of(context).size.height * 0.08,
+                            width: MediaQuery.of(context).size.width,
+                            margin: EdgeInsets.only(left: 60),
+                            child: TabBar(
+                              onTap: (val) {
+                                setState(() {
+                                  selectedTab = map[val].id;
+                                });
                               },
-                              child: Container(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                        flex: 3,
-                                        child: Container(
-
-                                            //height: MediaQuery.of(context).size.height*0.2,
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            child: Image.network(
-                                              "${snapshot.data.data[index].img1}",
-                                              fit: BoxFit.fill,
-                                            ))),
-                                    Text(
-                                      snapshot.data.data[index].name,
-                                      style: TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 16.0,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Image.asset(
-                                          "assets/rupee_sign.jpg",
-                                          width: 10.0,
-                                          height: 10.0,
-                                        ),
-                                        Expanded(
-                                            child: Text(
-                                          snapshot.data.data[index].price,
-                                          style: TextStyle(
-                                              fontSize: 14.0,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold),
-                                        )),
-                                        IconButton(
-                                            icon: Icon(
-                                              Icons.shopping_cart,
-                                              color: Colors.blue,
-                                            ),
-                                            onPressed: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (ctx) =>
-                                                          CartPage()));
-                                            })
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                height:
-                                    MediaQuery.of(context).size.height * 0.3,
-                                margin: const EdgeInsets.only(bottom: 20.0),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.black54,
-                                          blurRadius: 15.0,
-                                          offset: Offset(0.0, 0.75))
-                                    ]),
-                              ),
-                            );
-                          });
-                    } else if (snapshot.hasError) {
-                      return Text("error");
-                    } else {
-                      return Center(child: CircularProgressIndicator());
-                    }
-                  }),
+                              tabs: myTabs,
+                              unselectedLabelColor: const Color(0xffacb3bf),
+                              indicatorColor: Color(0xFFffac81),
+                              labelColor: Colors.black,
+                              indicatorSize: TabBarIndicatorSize.tab,
+                              indicatorWeight: 3.0,
+                              indicatorPadding: EdgeInsets.all(10),
+                              isScrollable: false,
+                              controller: _tabController,
+                            ),
+                          );
+                        }),
+                  )
+                : Center(
+                    child: Text("Loading.."),
+                  ),
+            Expanded(
+              child: map != null
+                  ? StreamBuilder<SearchList>(
+                      stream: searchBloc.searchList,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          if (snapshot.data.data.length == 0)
+                            return Center(child: Text("No Products Found"));
+                          return Container(
+                              child: ProductsGridView(snapshot.data.data));
+                        } else if (snapshot.hasError) {
+                          return Text("error");
+                        } else {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                      })
+                  : Center(
+                      child: Text("Loading.."),
+                    ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  Widget ProductsGridView(List<SearchModel> search) {
+    List<SearchModel> searchList = [];
+    searchList = selectedTab == ""
+        ? search.map((e) {
+            return e;
+          }).toList()
+        : search
+            .map((e) {
+              if (e.subCategoryId == selectedTab) return e;
+            })
+            .where((element) => element != null)
+            .toList();
+    return searchList.length != 0
+        ? GridView.builder(
+            itemCount: searchList.length,
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 0.67,
+              crossAxisSpacing: 15,
+              mainAxisSpacing: 5,
+            ),
+            itemBuilder: (context, int index) {
+              return InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (ctx) =>
+                              ProductRentalPage(id: searchList[index].id)));
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                          flex: 3,
+                          child: Container(
+
+                              //height: MediaQuery.of(context).size.height*0.2,
+                              width: MediaQuery.of(context).size.width,
+                              child: Image.network(
+                                "${searchList[index].img1}",
+                                fit: BoxFit.fill,
+                              ))),
+                      Text(
+                        searchList[index].name,
+                        style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Image.asset(
+                            "assets/rupee_sign.jpg",
+                            width: 10.0,
+                            height: 10.0,
+                          ),
+                          Expanded(
+                              child: Text(
+                            searchList[index].price,
+                            style: TextStyle(
+                                fontSize: 14.0,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          )),
+                          IconButton(
+                              icon: Icon(
+                                Icons.shopping_cart,
+                                color: Colors.blue,
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (ctx) => CartPage()));
+                              })
+                        ],
+                      )
+                    ],
+                  ),
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  margin: const EdgeInsets.only(bottom: 20.0),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10.0),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black54,
+                            blurRadius: 15.0,
+                            offset: Offset(0.0, 0.75))
+                      ]),
+                ),
+              );
+            })
+        : Center(
+            child: Text("No Products Found."),
+          );
   }
 }

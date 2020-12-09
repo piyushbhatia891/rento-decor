@@ -10,7 +10,7 @@ SubCategories _$SubCategoriesFromJson(Map<String, dynamic> json) {
   return SubCategories(
     result: json['result'] as String,
     message: json['message'] as String,
-    data: (json['data'] as List)
+    subcategories: (json['subcategories'] as List)
         ?.map((e) =>
             e == null ? null : SubCategory.fromJson(e as Map<String, dynamic>))
         ?.toList(),
@@ -21,5 +21,5 @@ Map<String, dynamic> _$SubCategoriesToJson(SubCategories instance) =>
     <String, dynamic>{
       'result': instance.result,
       'message': instance.message,
-      'data': instance.data,
+      'subcategories': instance.subcategories,
     };

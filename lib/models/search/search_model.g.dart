@@ -22,6 +22,7 @@ SearchModel _$SearchModelFromJson(Map<String, dynamic> json) {
     json['description'] as String,
     json['skuNo'] as String,
     json['material'] as String,
+    json['subCategoryId'] as String,
     json['isActive'] as String,
     json['subcatName'] as String,
     json['lableName'] as String,
@@ -35,6 +36,7 @@ Map<String, dynamic> _$SearchModelToJson(SearchModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
+      'subCategoryId': instance.subCategoryId,
       'categoryId': instance.categoryId,
       'labelId': instance.labelId,
       'price': instance.price,

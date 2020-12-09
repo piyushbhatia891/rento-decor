@@ -23,7 +23,6 @@ class _HomeViewState extends State<HomeView> {
     var listViewImage =
         'https://www.moredesign.com/wp-content/uploads/2020/03/1-14.jpg';
     catBloc.getCategories();
-    catBloc.getSubCategories();
     offerBloc.getOffers();
     return WillPopScope(
       onWillPop: () async => false,
@@ -166,16 +165,12 @@ class _HomeViewState extends State<HomeView> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Icon(Icons.arrow_back_ios, color: Colors.white, size: 16.0),
+            Icon(Icons.arrow_back_ios, color: Colors.white),
             Text(
-              "Eazy Shop",
+              "Rento Decor",
               style: TextStyle(color: Colors.white, fontSize: 20.0),
             ),
-            Icon(
-              Icons.notification_important,
-              color: Colors.white,
-              size: 16.0,
-            ),
+            Icon(Icons.notification_important, color: Colors.white),
           ],
         ),
       ),
@@ -208,7 +203,7 @@ class ListContainerWidget extends StatelessWidget {
               "Browse By Categories",
               style: TextStyle(
                   color: Colors.black,
-                  fontSize: 18.0,
+                  fontSize: 16.0,
                   fontWeight: FontWeight.bold),
             ),
             Icon(Icons.arrow_forward)
@@ -254,24 +249,19 @@ class ListContainerWidget extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Container(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: Image.network(
-                                    snapshot.data.data[index].image,
-                                    fit: BoxFit.cover,
-                                  ),
                                   width:
                                       MediaQuery.of(context).size.width * 0.2,
                                   height:
                                       MediaQuery.of(context).size.width * 0.2,
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(50.0),
-                                      color: Colors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                            color: Colors.grey.shade300,
-                                            blurRadius: 2.0,
-                                            spreadRadius: 4.0)
-                                      ]),
+                                    image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: NetworkImage(
+                                            snapshot.data.data[index].image)),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8.0)),
+                                    color: Colors.redAccent,
+                                  ),
                                 ),
                                 SizedBox(
                                   height: 10.0,
@@ -309,30 +299,19 @@ class ListContainerWidget2 extends StatelessWidget {
   }) : super(key: key);
 
   List<ServicesModel> model = [
+    new ServicesModel(imageUrl: "assets/dinner.png", title: "Party Rental"),
     new ServicesModel(
-        imageUrl: "assets/chair.png",
-        title: "ArmChair",
-        subtitle: "200+ Products"),
-    new ServicesModel(
-        imageUrl: "assets/sofa.png",
-        title: "Sofa Red",
-        subtitle: "50+ Products"),
-    new ServicesModel(
-        imageUrl: "assets/sofa.png",
-        title: "Sofa Red",
-        subtitle: "80+ Products"),
-    new ServicesModel(
-        imageUrl: "assets/sofa.png",
-        title: "Sofa Red",
-        subtitle: "80+ Products")
+        imageUrl: "assets/balloon.png", title: "Party Decoration"),
+    new ServicesModel(imageUrl: "assets/rhythm.png", title: "Band")
   ];
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          padding: const EdgeInsets.all(20.0),
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text(
@@ -345,91 +324,80 @@ class ListContainerWidget2 extends StatelessWidget {
             Icon(Icons.arrow_forward)
           ]),
         ),
-        SizedBox(
-          height: 10.0,
-        ),
         Container(
-          margin: const EdgeInsets.symmetric(horizontal: 10.0),
-          height: MediaQuery.of(context).size.height * 0.25,
-          child: StreamBuilder<Offers>(
+          height: MediaQuery.of(context).size.height * 0.2,
+          //margin: const EdgeInsets.all(20.0),
+          child: StreamBuilder(
               stream: offerBloc.categories,
               builder: (context, AsyncSnapshot<Offers> snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.none:
-                  case ConnectionState.waiting:
-                    return Center(child: CircularProgressIndicator());
-                  case ConnectionState.active:
-                  case ConnectionState.done:
-                    if (snapshot.hasData) {
-                      return ListView.builder(
-                          itemBuilder: (context, int index) {
-                            return InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (ctx) => SearchRentalPage(
-                                            subCategoryId:
-                                                snapshot.data.data[index].id)));
-                              },
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(
-                                    vertical: 5.0, horizontal: 10.0),
-                                width: MediaQuery.of(context).size.width * 0.3,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      child: Column(
-                                        children: [
-                                          Image.network(
-                                            snapshot.data.data[index].image,
-                                            fit: BoxFit.contain,
-                                          ),
-                                          Text(
-                                            snapshot.data.data[index].title,
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
-                                                fontSize: 12.0),
-                                          ),
-                                          Text(
-                                            snapshot
-                                                .data.data[index].description,
-                                            textAlign: TextAlign.center,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.grey.shade400,
-                                                fontSize: 12.0),
-                                          )
-                                        ],
-                                      ),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          color: Colors.white,
-                                          boxShadow: [
-                                            BoxShadow(
-                                                color: Colors.grey.shade300,
-                                                blurRadius: 2.0,
-                                                spreadRadius: 4.0)
-                                          ]),
-                                      padding: const EdgeInsets.all(10.0),
-                                    ),
-                                    SizedBox(
-                                      height: 10.0,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                      reverse: true,
+                      itemBuilder: (context, int index) {
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (ctx) => SearchRentalPage(
+                                        categoryId:
+                                            snapshot.data.data[index].id,
+                                        pageTitle:
+                                            snapshot.data.data[index].title)));
                           },
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: snapshot.data.data.length);
-                    }
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 10.0, vertical: 5.0),
+                            width: MediaQuery.of(context).size.width * 0.3,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.2,
+                                  height:
+                                      MediaQuery.of(context).size.width * 0.2,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: NetworkImage(
+                                            snapshot.data.data[index].image)),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8.0)),
+                                    color: Colors.redAccent,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10.0,
+                                ),
+                                Center(
+                                    child: Text(
+                                  snapshot.data.data[index].title,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                      fontSize: 12.0),
+                                )),
+                                Text(
+                                  snapshot.data.data[index].description,
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey.shade400,
+                                      fontSize: 12.0),
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: snapshot.data.data.length);
+                } else {
+                  return Text(snapshot.error.toString());
                 }
               }),
         )

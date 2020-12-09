@@ -1,4 +1,5 @@
 import 'package:eazy_shop/models/cat/cat_list.dart';
+import 'package:eazy_shop/models/subCat/sub_cat.dart';
 import 'package:eazy_shop/models/subCat/sub_cat_list.dart';
 import 'package:eazy_shop/persistence/repository.dart';
 import 'package:rxdart/rxdart.dart';
@@ -20,9 +21,12 @@ class CategoryBloc {
     _catFetcher.sink.add(weatherResponse);
   }
 
-  getSubCategories() async {
-    SubCategories subCatResponse = await _repository.getSubCategories();
+  Future<List<SubCategory>> getSubCategoriesByCategoryId(
+      String categoryId) async {
+    SubCategories subCatResponse =
+        await _repository.getSubCategoriesByCategoryId(categoryId);
     _subCatFetcher.sink.add(subCatResponse);
+    return subCatResponse.subcategories;
   }
 
   dispose() {
