@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:eazy_shop/bloc/cat_bloc.dart';
 import 'package:eazy_shop/bloc/offer_bloc.dart';
 import 'package:eazy_shop/models/cat/cat_list.dart';
@@ -25,12 +26,14 @@ class _HomeViewState extends State<HomeView> {
         'https://www.moredesign.com/wp-content/uploads/2020/03/1-14.jpg';
     catBloc.getCategories();
     offerBloc.getOffers();
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: SafeArea(
-        child: Scaffold(
-            backgroundColor: Colors.white,
-            body: SingleChildScrollView(
+    return SafeArea(
+      child: Scaffold(
+          backgroundColor: Colors.white,
+          body: DoubleBackToCloseApp(
+            snackBar: const SnackBar(
+              content: Text('Tap back again to leave'),
+            ),
+            child: SingleChildScrollView(
               child: Column(
                 //mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -65,8 +68,8 @@ class _HomeViewState extends State<HomeView> {
                   ListContainerWidget2()
                 ],
               ),
-            )),
-      ),
+            ),
+          )),
     );
   }
 
@@ -324,14 +327,13 @@ class ListContainerWidget2 extends StatelessWidget {
           ]),
         ),
         Container(
-          height: MediaQuery.of(context).size.height * 0.22,
+          height: MediaQuery.of(context).size.height * 0.20,
           //margin: const EdgeInsets.all(20.0),
           child: StreamBuilder(
               stream: offerBloc.categories,
               builder: (context, AsyncSnapshot<Offers> snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
-                      reverse: true,
                       itemBuilder: (context, int index) {
                         return InkWell(
                           onTap: () {
@@ -385,15 +387,6 @@ class ListContainerWidget2 extends StatelessWidget {
                                       color: Colors.black,
                                       fontSize: 12.0),
                                 )),
-                                Text(
-                                  snapshot.data.data[index].description,
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.grey.shade400,
-                                      fontSize: 12.0),
-                                )
                               ],
                             ),
                           ),

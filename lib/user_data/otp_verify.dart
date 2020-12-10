@@ -17,9 +17,11 @@ class OTPVerificationState extends State<OTPVerification> {
   SharedPreferences _preferences;
   void initState() {
     super.initState();
+    setPreferenceValue();
   }
 
   setPreferenceValue() async {
+    _preferences = await SharedPreferences.getInstance();
     setState(() {
       mobile = _preferences.getString("mobile");
     });
@@ -94,6 +96,23 @@ class OTPVerificationState extends State<OTPVerification> {
                     decoration: InputDecoration(
                         labelText: "Please Enter The OTP received",
                         icon: Icon(Icons.phone_iphone)),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  RichText(
+                    text: TextSpan(
+                        text: "Dont receive the OTP?",
+                        style: GoogleFonts.montserrat(
+                            fontSize: 14.0, color: Colors.grey),
+                        children: [
+                          TextSpan(
+                              text: " RESEND OTP",
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.bold))
+                        ]),
                   ),
                   SizedBox(
                     height: 15,

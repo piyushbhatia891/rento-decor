@@ -124,35 +124,22 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                   myTabs != null && myTabs.length > 0
                       ? Container(
                           height: MediaQuery.of(context).size.height * 0.08,
-                          child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: map.length,
-                              itemBuilder: (context, int index) {
-                                return Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.08,
-                                  width: MediaQuery.of(context).size.width,
-                                  margin: EdgeInsets.only(left: 60),
-                                  child: TabBar(
-                                    onTap: (val) {
-                                      setState(() {
-                                        selectedTab = map[val].id;
-                                      });
-                                    },
-                                    tabs: myTabs,
-                                    unselectedLabelColor:
-                                        const Color(0xffacb3bf),
-                                    indicatorColor: Color(0xFFffac81),
-                                    labelColor: Colors.black,
-                                    indicatorSize: TabBarIndicatorSize.tab,
-                                    indicatorWeight: 3.0,
-                                    indicatorPadding: EdgeInsets.all(10),
-                                    isScrollable: false,
-                                    controller: _tabController,
-                                  ),
-                                );
-                              }),
-                        )
+                          child: TabBar(
+                            onTap: (val) {
+                              setState(() {
+                                selectedTab = map[val].id;
+                              });
+                            },
+                            tabs: myTabs,
+                            unselectedLabelColor: const Color(0xffacb3bf),
+                            indicatorColor: Color(0xFFffac81),
+                            labelColor: Colors.black,
+                            indicatorSize: TabBarIndicatorSize.tab,
+                            indicatorWeight: 3.0,
+                            indicatorPadding: EdgeInsets.all(10),
+                            isScrollable: false,
+                            controller: _tabController,
+                          ))
                       : myTabs.length == 0
                           ? Container()
                           : Center(

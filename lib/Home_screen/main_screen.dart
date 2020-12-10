@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bubbled_navigation_bar/bubbled_navigation_bar.dart';
 import 'package:eazy_shop/order/index.dart';
 import 'package:eazy_shop/profile/profile_info.dart';
@@ -60,10 +62,32 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
+  Future<bool> _onWillPop() {
+    return showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Are you sure?'),
+            content: Text('Do you want to exit an App'),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text('No'),
+              ),
+              FlatButton(
+                onPressed: () => exit(0),
+                /*Navigator.of(context).pop(true)*/
+                child: Text('Yes'),
+              ),
+            ],
+          ),
+        ) ??
+        false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => false,
+      onWillPop: _onWillPop,
       child: Scaffold(
           bottomNavigationBar: BubbledNavigationBar(
             controller: _menuPositionController,
