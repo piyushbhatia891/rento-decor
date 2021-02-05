@@ -16,86 +16,123 @@ class CartItem extends StatefulWidget {
 class CartItemState extends State<CartItem> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.7,
-      height: MediaQuery.of(context).size.height * 0.20,
-      margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-      padding: const EdgeInsets.all(5.0),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10.0),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.black54,
-                blurRadius: 10.0,
-                offset: Offset(0.0, 0.75))
-          ]),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            child: Image.network(widget.product.product.img1),
-          ),
-          Expanded(
-            flex: 2,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text(
-                    widget.product.product.name,
-                    style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Html(
-                  data: widget.product.product.description,
-                ),
-                Expanded(child: SizedBox()),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+    return Stack(
+      children: [
+        Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * 0.15),
+        Container(
+          width: MediaQuery.of(context).size.width * 0.9,
+          height: MediaQuery.of(context).size.height * 0.15,
+          margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+          padding: const EdgeInsets.all(5.0),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.0),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black54,
+                    blurRadius: 10.0,
+                    offset: Offset(0.0, 0.75))
+              ]),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width * 0.3,
+                padding: const EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    image: DecorationImage(
+                        image: NetworkImage(
+                          widget.product.product.img1,
+                        ),
+                        fit: BoxFit.fill)),
+              ),
+              SizedBox(
+                width: 10.0,
+              ),
+              Expanded(
+                flex: 2,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Image.asset(
-                      "assets/rupee_sign.jpg",
-                      width: 10.0,
-                      height: 10.0,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        widget.product.product.name,
+                        maxLines: 2,
+                        style: TextStyle(
+                            color: Colors.grey, fontWeight: FontWeight.bold),
+                      ),
                     ),
-                    Expanded(
-                        child: Text(
-                      "${widget.product.model.quantity * double.parse(widget.product.product.price)}",
-                      style: TextStyle(
-                          fontSize: 16.0,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold),
-                    )),
-                    Text(
-                      widget.product.model.quantity.toString(),
-                      style: TextStyle(fontSize: 16.0, color: Colors.black),
+                    Expanded(child: SizedBox()),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Image.asset(
+                          "assets/rupee_sign.jpg",
+                          width: 10.0,
+                          height: 10.0,
+                        ),
+                        Expanded(
+                            child: Text(
+                          "${widget.product.model.quantity * double.parse(widget.product.product.price)}",
+                          style: TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
+                        )),
+                        Text(
+                          widget.product.model.quantity.toString(),
+                          style: TextStyle(fontSize: 16.0, color: Colors.black),
+                        ),
+                        InkWell(
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return UpdateQuantityContainer(
+                                        model: widget.product,
+                                        callback: callBack);
+                                  });
+                            },
+                            child: IconButton(
+                              icon: Icon(Icons.edit),
+                            ))
+                      ],
                     ),
-                    InkWell(
-                        onTap: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return UpdateQuantityContainer(
-                                    model: widget.product, callback: callBack);
-                              });
-                        },
-                        child: IconButton(
-                          icon: Icon(Icons.edit),
-                        ))
                   ],
                 ),
-              ],
+              )
+            ],
+          ),
+        ),
+        Positioned(
+          top: 0.0,
+          right: 0.0,
+          child: Container(
+            decoration: ShapeDecoration(
+              color: Colors.blue,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0)),
             ),
-          )
-        ],
-      ),
+            child: IconButton(
+              onPressed: () async {
+                await CartContainer.of(context)
+                    .removeItemFromCart(widget.product.model.id);
+              },
+              icon: Icon(
+                Icons.close,
+                color: Colors.white,
+                size: 18.0,
+              ),
+            ),
+          ),
+        )
+      ],
     );
   }
 
@@ -119,6 +156,7 @@ class UpdateQuantityContainerState extends State<UpdateQuantityContainer> {
       title: Text("Update Qunatity"),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       content: TextFormField(
+        keyboardType: TextInputType.number,
         controller: _quantity,
         decoration: InputDecoration(labelText: "Enter The Quantity"),
       ),

@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "C:\\Useful_docs\\Locker\\files\\pros\\flutter\\eazy_shop-master\\build\\webview_flutter\\intermediates\\res\\merged\\release\\layout\\notification_template_icon_group.xml",
+        "source": "C:\\Users\\piyush\\.gradle\\caches\\transforms-2\\files-2.1\\bcd2ab89d26230dea536c88e023b7268\\core-1.1.0\\res\\layout\\notification_template_icon_group.xml"
+    },
+    {
+        "merged": "C:\\Useful_docs\\Locker\\files\\pros\\flutter\\eazy_shop-master\\build\\webview_flutter\\intermediates\\res\\merged\\release\\layout\\notification_action.xml",
+        "source": "C:\\Users\\piyush\\.gradle\\caches\\transforms-2\\files-2.1\\bcd2ab89d26230dea536c88e023b7268\\core-1.1.0\\res\\layout\\notification_action.xml"
+    },
+    {
+        "merged": "C:\\Useful_docs\\Locker\\files\\pros\\flutter\\eazy_shop-master\\build\\webview_flutter\\intermediates\\res\\merged\\release\\layout\\notification_template_part_time.xml",
+        "source": "C:\\Users\\piyush\\.gradle\\caches\\transforms-2\\files-2.1\\bcd2ab89d26230dea536c88e023b7268\\core-1.1.0\\res\\layout\\notification_template_part_time.xml"
+    },
+    {
+        "merged": "C:\\Useful_docs\\Locker\\files\\pros\\flutter\\eazy_shop-master\\build\\webview_flutter\\intermediates\\res\\merged\\release\\layout\\notification_action_tombstone.xml",
+        "source": "C:\\Users\\piyush\\.gradle\\caches\\transforms-2\\files-2.1\\bcd2ab89d26230dea536c88e023b7268\\core-1.1.0\\res\\layout\\notification_action_tombstone.xml"
+    },
+    {
+        "merged": "C:\\Useful_docs\\Locker\\files\\pros\\flutter\\eazy_shop-master\\build\\webview_flutter\\intermediates\\res\\merged\\release\\layout\\custom_dialog.xml",
+        "source": "C:\\Users\\piyush\\.gradle\\caches\\transforms-2\\files-2.1\\bcd2ab89d26230dea536c88e023b7268\\core-1.1.0\\res\\layout\\custom_dialog.xml"
+    },
+    {
+        "merged": "C:\\Useful_docs\\Locker\\files\\pros\\flutter\\eazy_shop-master\\build\\webview_flutter\\intermediates\\res\\merged\\release\\layout\\notification_template_part_chronometer.xml",
+        "source": "C:\\Users\\piyush\\.gradle\\caches\\transforms-2\\files-2.1\\bcd2ab89d26230dea536c88e023b7268\\core-1.1.0\\res\\layout\\notification_template_part_chronometer.xml"
+    }
+]

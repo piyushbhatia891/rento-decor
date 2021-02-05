@@ -1,29 +1,56 @@
 import 'dart:convert';
-
-import 'package:eazy_shop/models/cat/cat_list.dart';
+import 'package:eazy_shop/models/order/order_list.dart';
 import 'package:eazy_shop/models/order/orders_list.dart';
-import 'package:eazy_shop/models/search/search_model_list.dart';
-import 'package:eazy_shop/models/subCat/sub_cat_list.dart';
-import 'package:http/http.dart';
+import 'package:eazy_shop/models/order/cancel_order_model.dart';
+
+import 'package:dio/dio.dart';
+import 'package:eazy_shop/models/offers/offers_list.dart';
 
 class OrderApiProvider {
-  Client client = Client();
-
   //This is the London weather API url available at this link: https://openweathermap.org/current
   final String baseUrl_OrdersApi =
       "http://yontechsoftwares.com/share/swastik/index.php/Api/getorderByUserId";
-  Future<Orders> getOrders(String userId) async {
-    final response = await client.post(baseUrl_OrdersApi,
-        body: jsonEncode(<String, String>{
-          "userId": userId,
-          'apiVersion': '1.0',
-          'token': ''
-        })); // Make the network call asynchronously to fetch the London weather data.
-    print(response.body.toString());
 
+  final String baseUrl_OrdersApi_order_id =
+      "http://yontechsoftwares.com/share/swastik/index.php/Api/getorderById";
+
+  final String baseUrl_OrdersApi_cancel_order_id =
+      "http://yontechsoftwares.com/share/swastik/index.php/Api/cancelOrder";
+  Future<CancelOrderModel> cancelOrder(
+      String orderId, String userId, String orderStatus) async {
+    Response response = await Dio().post("$baseUrl_OrdersApi", data: {
+      "userId": userId,
+      "id": orderId,
+      "orderStatus": orderStatus,
+      'apiVersion': '1.0',
+      'token': ''
+    });
     if (response.statusCode == 200) {
-      return Orders.fromJson(
-          jsonDecode(response.body)); //Return decoded response
+      return CancelOrderModel.fromMap(response.data); //Return decoded response
+    } else {
+      throw Exception('Failed to load weather');
+    }
+  }
+
+  Future<Orders> getOrderByOrderId(String orderId, String userId) async {
+    Response response = await Dio().post("$baseUrl_OrdersApi_order_id", data: {
+      "userId": userId,
+      "id": orderId,
+      'apiVersion': '1.0',
+      'token': ''
+    });
+    if (response.statusCode == 200) {
+      return Orders.fromJson(response.data); //Return decoded response
+    } else {
+      throw Exception('Failed to load weather');
+    }
+  }
+
+  Future<OrdersList> getOrders(String userId) async {
+    Response response = await Dio().post("$baseUrl_OrdersApi",
+        data: {"userId": userId, 'apiVersion': '1.0', 'token': ''});
+    if (response.statusCode == 200) {
+      return OrdersList.fromJson(response.data); //Return decoded response
     } else {
       throw Exception('Failed to load weather');
     }

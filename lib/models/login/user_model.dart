@@ -6,9 +6,9 @@ part 'user_model.g.dart';
 @JsonSerializable()
 class UserModel {
   String result, moveTo, message;
-  UserInfoModel userInfo;
+  UserInfoModel data;
 
-  UserModel(this.result, this.moveTo, this.message, this.userInfo);
+  UserModel(this.result, this.moveTo, this.message, this.data);
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
 

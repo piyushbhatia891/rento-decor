@@ -13,12 +13,13 @@ OrderModel _$OrderModelFromJson(Map<String, dynamic> json) {
     json['status'] as String,
     json['dateTime'] as String,
     json['fname'] as String,
+    json['pname'] as String,
     json['lname'] as String,
-    json['img1'] as String,
-    json['price'] as String,
-    json['qty'] as String,
-    json['noOfDays'] as String,
     json['total'] as String,
+    (json['items'] as List)
+        ?.map((e) =>
+            e == null ? null : OrderItem.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
   );
 }
 
@@ -30,9 +31,7 @@ Map<String, dynamic> _$OrderModelToJson(OrderModel instance) =>
       'dateTime': instance.dateTime,
       'fname': instance.fname,
       'lname': instance.lname,
-      'img1': instance.img1,
-      'price': instance.price,
-      'qty': instance.qty,
-      'noOfDays': instance.noOfDays,
+      'pname': instance.pname,
       'total': instance.total,
+      'items': instance.items,
     };

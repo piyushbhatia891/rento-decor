@@ -1,3 +1,5 @@
+import 'package:eazy_shop/Home_screen/main_screen.dart';
+import 'package:eazy_shop/shared/widgets/back_home_button.dart';
 import 'package:eazy_shop/utils/color/color.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,7 +17,8 @@ class SuccessPageState extends State<SuccessPage> {
           preferredSize:
               Size(double.infinity, MediaQuery.of(context).size.height * 0.08),
           child: Container(
-            padding: const EdgeInsets.all(10.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
             decoration: BoxDecoration(
                 gradient: LinearGradient(
                     colors: [HexColor("#2EB2F2"), HexColor("#2361AE")],
@@ -24,28 +27,30 @@ class SuccessPageState extends State<SuccessPage> {
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20),
                     bottomRight: Radius.circular(20))),
-            child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text("Order Place",
-                      style: GoogleFonts.montserrat(
-                          fontSize: 20.0,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600)),
-                  Expanded(child: SizedBox()),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.notification_important_outlined,
-                        size: 24,
-                        color: Colors.white,
-                      ),
-                    ],
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: Icon(
+                    Icons.navigate_before,
+                    size: 30,
+                    color: Colors.white,
                   ),
-                ],
-              ),
+                ),
+                Text("Order Placed",
+                    style: GoogleFonts.montserrat(
+                        fontSize: 20.0,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600)),
+                Expanded(child: SizedBox()),
+                Icon(
+                  Icons.notification_important_outlined,
+                  size: 30,
+                  color: Colors.white,
+                ),
+              ],
             ),
           ),
         ),
@@ -71,7 +76,8 @@ class SuccessPageState extends State<SuccessPage> {
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.black),
             ),
-            Expanded(flex: 2, child: SizedBox())
+            BackToHomePage(),
+            Expanded(flex: 2, child: SizedBox()),
           ],
         ),
       ),

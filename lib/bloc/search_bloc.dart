@@ -19,6 +19,12 @@ class SearchBloc {
     _searchFetcher.sink.add(weatherResponse);
   }
 
+  Future<SearchList> getProductsBySearchKeyword(String keyword) async {
+    SearchList weatherResponse =
+        await _repository.getProductsByKeyword(keyword);
+    return weatherResponse;
+  }
+
   getProductsBySubCategoryId(String catId, bool isSubCategory) async {
     SearchList weatherResponse =
         await _repository.getProductsBySubCategoryId(catId, isSubCategory);

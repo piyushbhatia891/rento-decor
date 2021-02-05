@@ -7,6 +7,7 @@ import 'package:eazy_shop/models/home_data_model.dart';
 import 'package:eazy_shop/models/offers/offers_list.dart';
 import 'package:eazy_shop/models/subCat/sub_cat_list.dart';
 import 'package:eazy_shop/screens/search/search_page.dart';
+import 'package:eazy_shop/screens/search_page/index.dart';
 import 'package:eazy_shop/screens/search_rental/index.dart';
 import 'package:eazy_shop/utils/color/color.dart';
 import 'package:flutter/cupertino.dart';
@@ -94,7 +95,7 @@ class _HomeViewState extends State<HomeView> {
           child: InkWell(
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (ctx) => SearchRentalPage()));
+                  MaterialPageRoute(builder: (ctx) => SearchBarPage()));
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -169,7 +170,11 @@ class _HomeViewState extends State<HomeView> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Icon(Icons.arrow_back_ios, color: Colors.white),
+            Icon(
+              Icons.navigate_before,
+              size: 30,
+              color: Colors.white,
+            ),
             Text(
               "Rento Decor",
               style: TextStyle(color: Colors.white, fontSize: 20.0),
@@ -285,9 +290,10 @@ class ListContainerWidget extends StatelessWidget {
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
                       itemCount: snapshot.data.data.length);
-                } else {
+                } else if (snapshot.hasError) {
                   return Text(snapshot.error.toString());
                 }
+                return Text("Loading");
               }),
         )
       ],
@@ -395,9 +401,10 @@ class ListContainerWidget2 extends StatelessWidget {
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
                       itemCount: snapshot.data.data.length);
-                } else {
+                } else if (snapshot.hasError) {
                   return Text(snapshot.error.toString());
                 }
+                return Text("Loading");
               }),
         )
       ],

@@ -1,30 +1,38 @@
-import 'package:eazy_shop/models/cat/cat_list.dart';
+import 'package:eazy_shop/models/order/order_list.dart';
 import 'package:eazy_shop/models/order/orders_list.dart';
-import 'package:eazy_shop/models/search/search_model_list.dart';
-import 'package:eazy_shop/models/subCat/sub_cat_list.dart';
+import 'package:eazy_shop/models/order/cancel_order_model.dart';
 import 'package:eazy_shop/persistence/order/order_repository.dart';
-import 'package:eazy_shop/persistence/repository.dart';
-import 'package:eazy_shop/persistence/search/search_repository.dart';
 import 'package:rxdart/rxdart.dart';
-
-import '../order/index.dart';
 
 class OrderBloc {
   OrderRepository _repository = OrderRepository();
 
-  //Create a PublicSubject object responsible to add the data which is got from
-  // the server in the form of WeatherResponse object and pass it to the UI screen as a stream.
-  final _searchFetcher = PublishSubject<Orders>();
-  Stream<Orders> get searchList => _searchFetcher.stream;
+  final _orderByUserIdFetcher = PublishSubject<OrdersList>();
+  Stream<OrdersList> get orderByUserIdList => _orderByUserIdFetcher.stream;
+
+  final _orderByOrderIdFetcher = PublishSubject<Orders>();
+  Stream<Orders> get orderByOrderId => _orderByOrderIdFetcher.stream;
 
   getOrdersByUserId(String userId) async {
-    Orders weatherResponse = await _repository.getOrdersByUserId(userId);
-    _searchFetcher.sink.add(weatherResponse);
+    OrdersList weatherResponse = await _repository.getOrdersByUserId(userId);
+    _orderByUserIdFetcher.sink.add(weatherResponse);
+  }
+
+  getOrdersByOrderId(String orderId, String userId) async {
+    Orders weatherResponse =
+        await _repository.getOrderByOrderId(orderId, userId);
+    _orderByOrderIdFetcher.sink.add(weatherResponse);
+  }
+
+  Future<CancelOrderModel> cancelOrder(
+      String orderId, String userId, String orderStatus) async {
+    return _repository.cancelOrder(orderId, userId, orderStatus);
   }
 
   dispose() {
     //Close the weather fetcher
-    _searchFetcher.close();
+    _orderByUserIdFetcher.close();
+    _orderByOrderIdFetcher.close();
   }
 }
 

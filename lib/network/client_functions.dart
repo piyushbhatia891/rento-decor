@@ -22,34 +22,71 @@ Future<SendOtpModel> getOtp(String number) async {
   );
 
   if (response.statusCode == 200) {
+    client.close();
     final parsed = jsonDecode(response.body);
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString("mobile", number);
     return SendOtpModel.fromJson(parsed);
   } else {
+    client.close();
     throw Exception('Failed to Get Otp.');
   }
 }
 
-Future<UserModel> verifyOtp(int mobile, String otp) async {
+Future<SendOtpModel> resendOtp(String number) async {
   http.Client client = http.Client();
   final http.Response response = await client.post(
-    "http://yontechsoftwares.com/share/swastik/index.php/Api/verifyOtp",
-    /*headers: <String, String>{
+    "http://yontechsoftwares.com/share/swastik/index.php/Api/resendOTP",
+    headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-    },*/
-    body: jsonEncode(<String, dynamic>{
-      'mobile': mobile,
+    },
+    body: jsonEncode(<String, String>{
+      'mobile': number,
       'userType': 'Customer',
-      'otp': otp
+      'apiVersion': '1.0'
     }),
   );
 
   if (response.statusCode == 200) {
+    client.close();
     final parsed = jsonDecode(response.body);
+    return SendOtpModel.fromJson(parsed);
+  } else {
+    client.close();
+    throw Exception('Failed to Get Otp.');
+  }
+}
 
+Future<UserModel> verifyOtp(String mobile, String otp) async {
+  http.Client client = http.Client();
+  Map data = {
+    "mobile": mobile,
+    "userType": "Customer",
+    "otp": otp,
+    "apiVersion": "1.0",
+    "imei": "1",
+    "otpExpiryTime": "1"
+  };
+
+  String body = json.encode(data);
+
+  final http.Response response = await client.post(
+    "http://yontechsoftwares.com/share/swastik/index.php/Api/verifyOtp",
+    headers: <String, String>{
+      'Content-Type': 'application/json',
+    },
+    body: jsonEncode(data),
+  );
+
+  if (response.statusCode == 200) {
+    client.close();
+    final parsed = jsonDecode(response.body);
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    UserModel model = UserModel.fromJson(parsed);
+    preferences.setString("user", model.data.userId);
     return UserModel.fromJson(parsed);
   } else {
+    client.close();
     throw Exception('Failed to Get Otp.');
   }
 }

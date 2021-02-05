@@ -9,7 +9,7 @@ part 'orders_list.g.dart';
 class Orders {
   String result, message;
 
-  List<OrderModel> data;
+  OrderModel data;
   Orders({this.result, this.message, this.data});
   factory Orders.fromJson(Map<String, dynamic> json) => _$OrdersFromJson(json);
 

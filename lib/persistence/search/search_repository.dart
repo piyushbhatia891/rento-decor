@@ -12,4 +12,7 @@ class SearchRepository {
 
   Future<SearchList> getProductsBySubCategoryId(id, isSubCategory) =>
       appApiProvider.getSearchList(id, isSubCategory);
+
+  Future<SearchList> getProductsByKeyword(keyword) =>
+      appApiProvider.searchKeyword(keyword);
 }

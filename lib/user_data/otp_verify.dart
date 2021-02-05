@@ -1,10 +1,12 @@
 import 'package:eazy_shop/Home_screen/main_screen.dart';
 import 'package:eazy_shop/network/client_functions.dart';
 import 'package:eazy_shop/user_data/otp_verify.dart';
+import 'package:eazy_shop/widgets/progress_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OTPVerification extends StatefulWidget {
@@ -15,6 +17,8 @@ class OTPVerificationState extends State<OTPVerification> {
   String otp = '';
   String mobile = '';
   SharedPreferences _preferences;
+
+  ProgressDialog progressDialog;
   void initState() {
     super.initState();
     setPreferenceValue();
@@ -29,6 +33,8 @@ class OTPVerificationState extends State<OTPVerification> {
 
   @override
   Widget build(BuildContext context) {
+    progressDialog = createProgressDialogObject(context);
+    styleProgressDialog(progressDialog, 'Resending OTP...');
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
@@ -100,19 +106,33 @@ class OTPVerificationState extends State<OTPVerification> {
                   SizedBox(
                     height: 15,
                   ),
-                  RichText(
-                    text: TextSpan(
-                        text: "Dont receive the OTP?",
-                        style: GoogleFonts.montserrat(
-                            fontSize: 14.0, color: Colors.grey),
-                        children: [
-                          TextSpan(
-                              text: " RESEND OTP",
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.bold))
-                        ]),
+                  InkWell(
+                    onTap: () async {
+                      await showProgressBar(progressDialog);
+                      SharedPreferences preferences =
+                          await SharedPreferences.getInstance();
+                      resendOtp(preferences.getString("mobile"))
+                          .then((value) async {
+                        await hideProgressBar(progressDialog);
+                      }).catchError((error) async {
+                        await hideProgressBar(progressDialog);
+                        //print("error: " + error.toString());
+                      });
+                    },
+                    child: RichText(
+                      text: TextSpan(
+                          text: "Dont receive the OTP?",
+                          style: GoogleFonts.montserrat(
+                              fontSize: 14.0, color: Colors.grey),
+                          children: [
+                            TextSpan(
+                                text: " RESEND OTP",
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.bold))
+                          ]),
+                    ),
                   ),
                   SizedBox(
                     height: 15,
@@ -148,8 +168,42 @@ class VerifyButtonState extends State<VerifyButton> {
                 buttonText = "Loading..";
                 enabled = false;
               });
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (ctx) => MainScreen()));
+              SharedPreferences preferences =
+                  await SharedPreferences.getInstance();
+
+              verifyOtp(preferences.getString("mobile"), widget.otp)
+                  .then((value) {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (ctx) => MainScreen()));
+              }).catchError((error) {
+                setState(() {
+                  enabled = true;
+                  buttonText = "Continue";
+                  showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text("Error!"),
+                          content:
+                              Text("There was some error. Please correct OTP"),
+                          actions: [
+                            RaisedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Center(
+                                child: Text("Ok"),
+                              ),
+                            )
+                          ],
+                        );
+                      });
+                });
+                //print("error: " + error.toString());
+              });
+              /*Navigator.push(
+                  context, MaterialPageRoute(builder: (ctx) => MainScreen()));*/
             }
           : null,
       shape: RoundedRectangleBorder(

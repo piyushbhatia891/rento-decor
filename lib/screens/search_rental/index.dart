@@ -64,7 +64,8 @@ class SearchRentalPageState extends State<SearchRentalPage>
           preferredSize:
               Size(double.infinity, MediaQuery.of(context).size.height * 0.08),
           child: Container(
-            padding: const EdgeInsets.all(10.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
             decoration: BoxDecoration(
                 gradient: LinearGradient(
                     colors: [HexColor("#2EB2F2"), HexColor("#2361AE")],
@@ -73,47 +74,38 @@ class SearchRentalPageState extends State<SearchRentalPage>
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20),
                     bottomRight: Radius.circular(20))),
-            child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  IconButton(
-                    onPressed: () => Navigator.pop(context),
-                    icon: Icon(
-                      Icons.navigate_before,
-                      size: 30,
-                      color: Colors.white,
-                    ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                IconButton(
+                  padding: const EdgeInsets.all(0.0),
+                  onPressed: () => Navigator.pop(context),
+                  icon: Icon(
+                    Icons.navigate_before,
+                    size: 30,
+                    color: Colors.white,
                   ),
-                  Text(widget.pageTitle,
-                      style: GoogleFonts.montserrat(
-                          fontSize: 20.0,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600)),
-                  Expanded(child: SizedBox()),
-                  Row(
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (ctx) => CartPage()));
-                        },
-                        icon: Icon(
-                          Icons.shopping_cart,
-                          size: 30,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Icon(
-                        Icons.notification_important_outlined,
-                        size: 24,
+                ),
+                Text(widget.pageTitle,
+                    style: GoogleFonts.montserrat(
+                        fontSize: 20.0,
                         color: Colors.white,
-                      ),
-                    ],
+                        fontWeight: FontWeight.w600)),
+                Expanded(child: SizedBox()),
+                IconButton(
+                  padding: const EdgeInsets.all(0.0),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (ctx) => CartPage()));
+                  },
+                  icon: Icon(
+                    Icons.shopping_cart,
+                    size: 30,
+                    color: Colors.white,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -133,12 +125,12 @@ class SearchRentalPageState extends State<SearchRentalPage>
                       },
                       tabs: myTabs,
                       unselectedLabelColor: const Color(0xffacb3bf),
-                      indicatorColor: Color(0xFFffac81),
+                      indicatorColor: HexColor("#2EB2F2"),
                       labelColor: Colors.black,
                       indicatorSize: TabBarIndicatorSize.tab,
                       indicatorWeight: 3.0,
                       indicatorPadding: EdgeInsets.all(10),
-                      isScrollable: false,
+                      isScrollable: true,
                       controller: _tabController,
                     ),
                   )
@@ -190,7 +182,7 @@ class SearchRentalPageState extends State<SearchRentalPage>
                 const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              childAspectRatio: 0.67,
+              childAspectRatio: 0.60,
               crossAxisSpacing: 15,
               mainAxisSpacing: 5,
             ),
@@ -204,27 +196,29 @@ class SearchRentalPageState extends State<SearchRentalPage>
                               ProductRentalPage(id: searchList[index].id)));
                 },
                 child: Container(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10.0, vertical: 5.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                          flex: 3,
                           child: Container(
-
-                              //height: MediaQuery.of(context).size.height*0.2,
+                              //height: MediaQuery.of(context).size.height * 0.25,
                               width: MediaQuery.of(context).size.width,
                               child: Image.network(
                                 "${searchList[index].img1}",
                                 fit: BoxFit.fill,
                               ))),
+                      SizedBox(
+                        height: 5.0,
+                      ),
                       Text(
                         searchList[index].name,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold),
+                            color: Colors.grey, fontWeight: FontWeight.bold),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -257,8 +251,8 @@ class SearchRentalPageState extends State<SearchRentalPage>
                       )
                     ],
                   ),
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  margin: const EdgeInsets.only(bottom: 20.0),
+                  //height: MediaQuery.of(context).size.height * 0.3,
+                  margin: const EdgeInsets.only(bottom: 10.0),
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10.0),

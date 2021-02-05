@@ -10,10 +10,9 @@ Orders _$OrdersFromJson(Map<String, dynamic> json) {
   return Orders(
     result: json['result'] as String,
     message: json['message'] as String,
-    data: (json['data'] as List)
-        ?.map((e) =>
-            e == null ? null : OrderModel.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    data: json['data'] == null
+        ? null
+        : OrderModel.fromJson(json['data'] as Map<String, dynamic>),
   );
 }
 

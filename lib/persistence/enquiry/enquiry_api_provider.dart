@@ -1,11 +1,6 @@
 import 'dart:convert';
 
-import 'package:eazy_shop/models/cat/cat_list.dart';
 import 'package:eazy_shop/models/enquiry/enquiry.dart';
-import 'package:eazy_shop/models/offers/offers_list.dart';
-import 'package:eazy_shop/models/order/orders_list.dart';
-import 'package:eazy_shop/models/search/search_model_list.dart';
-import 'package:eazy_shop/models/subCat/sub_cat_list.dart';
 import 'package:http/http.dart';
 
 class EnquiryApiProvider {
@@ -27,7 +22,6 @@ class EnquiryApiProvider {
           'text': model.description,
           'apiVersion': '1.0'
         })); // Make the network call asynchronously to fetch the London weather data.
-    print(response.body.toString());
 
     if (response.statusCode == 200) {
       return true; //Return decoded response

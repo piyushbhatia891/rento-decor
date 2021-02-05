@@ -63,7 +63,8 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 preferredSize: Size(
                     double.infinity, MediaQuery.of(context).size.height * 0.08),
                 child: Container(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10.0, vertical: 10.0),
                   decoration: BoxDecoration(
                       gradient: LinearGradient(
                           colors: [HexColor("#2EB2F2"), HexColor("#2361AE")],
@@ -72,49 +73,38 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                       borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(20),
                           bottomRight: Radius.circular(20))),
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        IconButton(
-                          onPressed: () => Navigator.pop(context),
-                          icon: Icon(
-                            Icons.navigate_before,
-                            size: 30,
-                            color: Colors.white,
-                          ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        padding: const EdgeInsets.all(0.0),
+                        onPressed: () => Navigator.pop(context),
+                        icon: Icon(
+                          Icons.navigate_before,
+                          size: 30,
+                          color: Colors.white,
                         ),
-                        Text(widget.pageTitle,
-                            style: GoogleFonts.montserrat(
-                                fontSize: 20.0,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600)),
-                        Expanded(child: SizedBox()),
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (ctx) => CartPage()));
-                              },
-                              icon: Icon(
-                                Icons.shopping_cart,
-                                size: 30,
-                                color: Colors.white,
-                              ),
-                            ),
-                            Icon(
-                              Icons.notification_important_outlined,
-                              size: 24,
+                      ),
+                      Text(widget.pageTitle,
+                          style: GoogleFonts.montserrat(
+                              fontSize: 20.0,
                               color: Colors.white,
-                            ),
-                          ],
+                              fontWeight: FontWeight.w600)),
+                      Expanded(child: SizedBox()),
+                      IconButton(
+                        padding: const EdgeInsets.all(0.0),
+                        onPressed: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (ctx) => CartPage()));
+                        },
+                        icon: Icon(
+                          Icons.shopping_cart,
+                          size: 30,
+                          color: Colors.white,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -124,6 +114,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                   myTabs != null && myTabs.length > 0
                       ? Container(
                           height: MediaQuery.of(context).size.height * 0.08,
+                          width: MediaQuery.of(context).size.width,
                           child: TabBar(
                             onTap: (val) {
                               setState(() {
@@ -132,12 +123,12 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                             },
                             tabs: myTabs,
                             unselectedLabelColor: const Color(0xffacb3bf),
-                            indicatorColor: Color(0xFFffac81),
+                            indicatorColor: HexColor("#2EB2F2"),
                             labelColor: Colors.black,
                             indicatorSize: TabBarIndicatorSize.tab,
                             indicatorWeight: 3.0,
                             indicatorPadding: EdgeInsets.all(10),
-                            isScrollable: false,
+                            isScrollable: true,
                             controller: _tabController,
                           ))
                       : myTabs.length == 0
@@ -240,11 +231,20 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                 )
                               ],
                             ),
+                            SizedBox(
+                              width: 5.0,
+                            ),
                             Row(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Icon(Icons.person, color: HexColor("#CF2F2F")),
+                                Image.asset(
+                                  "assets/rupee_sign.jpg",
+                                  width: 10.0,
+                                  colorBlendMode: BlendMode.color,
+                                  color: Colors.red,
+                                  height: 10.0,
+                                ),
                                 Text(
                                   snapshot[index].price,
                                   style: TextStyle(fontSize: 12.0),

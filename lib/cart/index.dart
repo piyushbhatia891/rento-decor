@@ -24,7 +24,8 @@ class CartPageState extends State<CartPage> {
               preferredSize: Size(
                   double.infinity, MediaQuery.of(context).size.height * 0.08),
               child: Container(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 10.0, vertical: 10.0),
                 decoration: BoxDecoration(
                     gradient: LinearGradient(
                         colors: [HexColor("#2EB2F2"), HexColor("#2361AE")],
@@ -33,36 +34,26 @@ class CartPageState extends State<CartPage> {
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(20),
                         bottomRight: Radius.circular(20))),
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        onPressed: () => Navigator.pop(context),
-                        icon: Icon(
-                          Icons.navigate_before,
-                          size: 30,
-                          color: Colors.white,
-                        ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: Icon(
+                        Icons.navigate_before,
+                        size: 30,
+                        color: Colors.white,
                       ),
-                      Text("Cart",
-                          style: GoogleFonts.montserrat(
-                              fontSize: 20.0,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600)),
-                      Expanded(child: SizedBox()),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.notification_important_outlined,
-                            size: 24,
+                    ),
+                    Text("Cart",
+                        style: GoogleFonts.montserrat(
+                            fontSize: 20.0,
                             color: Colors.white,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                            fontWeight: FontWeight.w600)),
+                    Expanded(child: SizedBox()),
+                    RemoveIconWidget(),
+                  ],
                 ),
               ),
             ),
@@ -71,6 +62,33 @@ class CartPageState extends State<CartPage> {
         ),
       ),
     );
+  }
+}
+
+class RemoveIconWidget extends StatefulWidget {
+  RemoveIconWidgetState createState() => RemoveIconWidgetState();
+}
+
+class RemoveIconWidgetState extends State<RemoveIconWidget> {
+  CartContainerState state;
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    state = CartContainer.of(context);
+  }
+
+  Widget build(BuildContext context) {
+    return state.cartModel.length > 0
+        ? IconButton(
+            padding: const EdgeInsets.all(0.0),
+            onPressed: () {
+              state.emptyCart();
+            },
+            icon: Icon(
+              Icons.remove_circle_outline,
+              color: Colors.white,
+            ),
+          )
+        : Container();
   }
 }
 
@@ -91,63 +109,59 @@ class BottomWidgetState extends State<BottomWidget> {
   @override
   Widget build(BuildContext context) {
     state = CartContainer.of(context);
-    return Container(
-      margin: const EdgeInsets.all(10.0),
-      width: MediaQuery.of(context).size.width * 0.8,
-      height: MediaQuery.of(context).size.height * 0.1,
-      child: Center(
-        child: InkWell(
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (ctx) => CartAddressPage(
-                          cartPrice: state.subTotal,
-                        )));
-          },
-          child: Container(
-            padding: const EdgeInsets.all(15.0),
+    return state.cartModel.length > 0
+        ? Container(
+            margin: const EdgeInsets.all(10.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            width: MediaQuery.of(context).size.width * 0.8,
+            height: MediaQuery.of(context).size.height * 0.1,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50.0),
                 gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [HexColor("#0E96D9"), HexColor("#2273BB")])),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Total Paid",
-                      style: TextStyle(color: Colors.white, fontSize: 16.0),
-                    ),
-                    Expanded(
-                      child: SizedBox(),
-                    ),
-                    SubTotalWidget()
-                  ],
-                ),
-                Container(
-                  width: 2.0,
-                  decoration: BoxDecoration(color: Colors.white),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Checkout",
-                        style: TextStyle(
-                            fontSize: 18.0,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold))
-                  ],
-                )
-              ],
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (ctx) => CartAddressPage(
+                              cartModel: state.cartModel,
+                            )));
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        "Total Paid",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      SubTotalWidget()
+                    ],
+                  ),
+                  Container(
+                    width: 2.0,
+                    decoration: BoxDecoration(color: Colors.white),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Checkout",
+                          style: TextStyle(
+                              fontSize: 18.0,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold))
+                    ],
+                  )
+                ],
+              ),
             ),
-          ),
-        ),
-      ),
-    );
+          )
+        : Container();
   }
 }

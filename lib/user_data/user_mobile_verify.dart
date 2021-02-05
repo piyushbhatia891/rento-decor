@@ -2,6 +2,7 @@ import 'package:eazy_shop/Home_screen/main_screen.dart';
 import 'package:eazy_shop/models/login/send_otp.dart';
 import 'package:eazy_shop/network/client_functions.dart';
 import 'package:eazy_shop/user_data/otp_verify.dart';
+import 'package:eazy_shop/utils/custom_popups.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -105,22 +106,7 @@ class SendOtpBoxContainerState extends State<SendOtpBoxContainer> {
         onPressed: enabled
             ? () async {
                 widget.mobileNumber == ""
-                    ? showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text("Number Invalid"),
-                            content: Text("Please enter valid Number"),
-                            actions: [
-                              RaisedButton(
-                                onPressed: () => Navigator.pop(context),
-                                color: Colors.blue,
-                                textColor: Colors.white,
-                                child: Center(child: Text("Ok")),
-                              )
-                            ],
-                          );
-                        })
+                    ? CustomPopups.showToastMessage("Please enter valid Number")
                     : setState(() {
                         buttonText = "Loading..";
                         enabled = false;

@@ -16,9 +16,8 @@ class SubTotalWidgetState extends State<SubTotalWidget> {
   Widget build(BuildContext context) {
     state = CartContainer.of(context);
     return Text(
-      state.subTotal.toString(),
-      style: TextStyle(
-          fontSize: 16.0, color: Colors.white, fontWeight: FontWeight.bold),
+      'Rs. ${state.subTotal.toString()}',
+      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
     );
   }
 }

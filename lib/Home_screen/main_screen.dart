@@ -66,6 +66,8 @@ class _MainScreenState extends State<MainScreen> {
     return showDialog(
           context: context,
           builder: (context) => AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
             title: Text('Are you sure?'),
             content: Text('Do you want to exit an App'),
             actions: <Widget>[
