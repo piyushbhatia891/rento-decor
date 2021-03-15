@@ -38,7 +38,8 @@ class ApiProvider {
   }
 
   Future<SubCategories> getSubCategoriesByCategoryId(String categoryId) async {
-    Response response = await Dio().get("$_baseUrl_SubCategoriesApi");
+    Response response = await Dio().post("$_baseUrl_SubCategoriesApi",
+        data: {"id": categoryId, "apiVersion": "1.0", "token": ""});
     if (response.statusCode == 200) {
       return SubCategories.fromJson(response.data); //Return decoded response
     } else {

@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: com.airbnb.android:lottie:3.3.0@aar" type="AndroidModuleLibraryType">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d7c18aafde7bd465e8538360a04d0e50/lottie-3.3.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d7c18aafde7bd465e8538360a04d0e50/lottie-3.3.0/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

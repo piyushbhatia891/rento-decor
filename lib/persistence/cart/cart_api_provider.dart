@@ -27,7 +27,7 @@ class CartApiProvider {
     });
     if (response.statusCode == 200) {
       return CartServerResponse.fromJson(
-          response.data); //Return decoded response
+          response.data); //R``eturn decoded response
     } else {
       throw Exception('Failed to load weather');
     }

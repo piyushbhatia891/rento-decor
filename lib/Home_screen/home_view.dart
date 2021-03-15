@@ -252,7 +252,7 @@ class ListContainerWidget extends StatelessWidget {
                           child: Container(
                             margin: const EdgeInsets.symmetric(
                                 horizontal: 10.0, vertical: 5.0),
-                            width: MediaQuery.of(context).size.width * 0.3,
+                            width: MediaQuery.of(context).size.width * 0.2,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
